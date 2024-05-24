@@ -11,6 +11,7 @@ export interface Task{
     assigner?:string,
     assignee?:[],
     comments?:[],
+    tags?:[],
     isDeleted:boolean,
 }
 
@@ -51,6 +52,11 @@ const TaskSchema = new mongoose.Schema<Task>({
   comments:[{
     type:mongoose.Schema.Types.ObjectId,
     ref:'comment',
+    required:false,
+  }],
+  tags:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'tags',
     required:false,
   }],
   isDeleted:{

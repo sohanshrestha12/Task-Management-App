@@ -19,11 +19,31 @@ export const addCommentToTask = (taskID: string, commentId: string) => {
     }
   );
 };  
+
+export const addTagsToTask =(taskId:string,tagId:string)=>{
+  return TaskModel.findOneAndUpdate(
+    {_id:taskId},
+    {
+      $push:{
+        tags: new mongoose.Types.ObjectId(tagId),
+      },
+    }
+  );
+}
 export const removeCommentFromTask = (id: string, taskID: string) => {
   return TaskModel.findByIdAndUpdate(
     taskID,
     {
       $pull: { comments: id },
+    },
+    { new: true }
+  );
+};
+export const removeTagFromTask = (id: string, taskID: string) => {
+  return TaskModel.findByIdAndUpdate(
+    taskID,
+    {
+      $pull: { tags: id },
     },
     { new: true }
   );
