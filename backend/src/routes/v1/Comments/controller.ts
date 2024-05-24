@@ -70,14 +70,16 @@ const CommentsController = {
   },
 
   async deleteComment(
-    req: Request<{ id: string; postId: string }, unknown, unknown>,
+    req: Request<{ id: string; taskId: string }, unknown, unknown>,
     res: Response,
     next: NextFunction
   ) {
     try {
-      const { id, postId } = req.params;
+      const { id, taskId } = req.params;
       const author = res.locals.user._id as string;
-      const result = await CommentsService.deleteComment(id, postId, author);
+      await TaskService.getTaskById(taskId);
+
+      const result = await CommentsService.deleteComment(id, taskId, author);
       return successResponse({
         response: res,
         message: "Comment Deleted Successfully",
