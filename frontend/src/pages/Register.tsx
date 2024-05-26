@@ -1,4 +1,5 @@
 import { RegisterUser } from "@/Types/Auth";
+import { registerValidation } from "@/Validation/RegisterValidation";
 import { registerUser } from "@/api/Auth";
 import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import CustomField from "@/components/CustomField";
@@ -118,7 +119,7 @@ const Register = () => {
               </h2>
               <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
               <div className="text-start">
-                <Formik initialValues={initialValues} onSubmit={onSubmit}>
+                <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={registerValidation}>
                   {({ isSubmitting }) => (
                     <Form className="flex flex-col gap-5">
                       <div>

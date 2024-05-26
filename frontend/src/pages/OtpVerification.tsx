@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { resendOtp, verifyUser } from "@/api/Auth";
 import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import ErrorAlert from "@/components/ErrorAlert";
@@ -74,7 +75,9 @@ const OtpVerification = () => {
         )}
         <Card className="w-[450px]">
           <CardHeader className="flex flex-col items-center">
-            <CardTitle>Verify your otp</CardTitle>
+            <CardTitle className="mb-5">
+              <span className="text-green-500 font-bold text-3xl"> Verify your otp</span>
+            </CardTitle>
             <CardDescription className="text-center">
               We have sent you an otp code to verify its you. Please check your
               inbox and paste the code here.
@@ -90,18 +93,18 @@ const OtpVerification = () => {
                     onChange={(value) => setValue(value)}
                   >
                     <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
+                      <InputOTPSlot className="h-[45px]" index={0} />
+                      <InputOTPSlot className="h-[45px]" index={1} />
+                      <InputOTPSlot className="h-[45px]" index={2} />
                     </InputOTPGroup>
                     <InputOTPSeparator />
                     <InputOTPGroup>
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
+                      <InputOTPSlot className="h-[45px]" index={3} />
+                      <InputOTPSlot className="h-[45px]" index={4} />
+                      <InputOTPSlot className="h-[45px]" index={5} />
                     </InputOTPGroup>
                   </InputOTP>
-                  <Button
+                  <Button variant={'green'}
                     type="submit"
                     disabled={value.length < 6 || isSubmitting}
                   >

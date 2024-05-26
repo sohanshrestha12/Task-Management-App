@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import {loginValidation} from '@/Validation/LoginValidation'
 const initialValues = {
   email: "",
   password: "",
@@ -94,7 +94,11 @@ const initialValues = {
               </h2>
               <div className="border-2 w-10 border-green-500 inline-block mb-2"></div>
               <div className="text-start">
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={handleSubmit}
+                  validationSchema={loginValidation}
+                >
                   {({ isSubmitting }) => (
                     <Form className="flex flex-col gap-5">
                       <div>
