@@ -63,6 +63,20 @@ const UserController = {
       next(error);
     }
   },
+
+  async getCurrentUser(req:Request,res:Response,next:NextFunction){
+    try {
+      const user = res.locals.user;
+      return successResponse({
+        response:res,
+        message:"Retrieved Logged In user successfully",
+        data:user
+      })
+    } catch (error) {
+      next(error);
+      console.log(error);
+    }
+  }
 };
 
 export default UserController;

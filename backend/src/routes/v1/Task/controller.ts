@@ -22,5 +22,47 @@ const TaskController = {
       next(error);
     }
   },
+  async getAllTask (req:Request,res:Response,next:NextFunction){
+    try {
+      const result = await TaskService.getAllTask();
+      return successResponse({
+        response:res,
+        message:"Successfully retrieved all tasks",
+        data: result,
+        status:200,
+      })
+    } catch (error) {
+      next(error);
+    }
+  },
+  async getTaskById(req:Request<{id:string},unknown,unknown>,res:Response,next:NextFunction){
+    try {
+      const {id} = req.params;
+      const result = await TaskService.getTaskById(id);
+      return successResponse({
+        response:res,
+        message:"Successfully retrieved the task",
+        data:result,
+        status:200
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  async deleteTask(req:Request<{id:string},unknown,unknown>,res:Response,next:NextFunction){
+    try {
+      const {id} = req.params;
+      const userId = res.locals.user._id;
+      const result = await TaskService.deleteTask(id,userId);
+      return successResponse({
+        response:res,
+        message:"Task Deleted Successfully",
+        data:result,
+        status:200
+      })
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 export default TaskController;

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Task, TaskModel } from "./model";
+import { Tags } from "../Tags/models";
 
 export const createTask =(data:Task,userId:string):Promise<Task>=>{
     const task = new TaskModel({...data,assigner:userId});
@@ -48,3 +49,11 @@ export const removeTagFromTask = (id: string, taskID: string) => {
     { new: true }
   );
 };
+
+export const getAllTask=():Promise<Tags[]>=>{
+  return TaskModel.find();
+}
+
+export const deleteTask=(id:string,userId:string):Promise<Tags | null>=>{
+  return TaskModel.findOneAndDelete({_id:id,assigner:userId},{new:true});
+}

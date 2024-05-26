@@ -12,7 +12,6 @@ const AuthService = {
 
     const isValid = await user.comparePassword(data.password);
     if (!isValid) throw new CustomError("Invalid user credentials", 401);
-
     const accessToken = signJwt(
       omit(user.toJSON(), userPrivateFields),
       "accessToken",

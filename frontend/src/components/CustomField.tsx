@@ -9,9 +9,9 @@ interface CustomFieldProps{
 }
 const CustomField = ({label,name,type,placeholder}:CustomFieldProps) => {
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <label htmlFor={name}>{label}</label>
-      <Field name={name} > 
+      <Field name={name}> 
         {({field}:FieldProps)=>(
             <Input type={type} placeholder={placeholder} {...field}></Input>
         )}
