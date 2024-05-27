@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import OtpVerification from "./pages/OtpVerification";
 import Register from "./pages/Register";
 import RequireAuth from "./components/Auth/RequireAuth";
+import KanbanBoard from "./components/KanbanBoard";
 const App = () => {
   return (
     <AuthProvider>
@@ -16,7 +17,9 @@ const App = () => {
               <Layout />
             </RequireAuth>
           }
-        ></Route>
+        >
+          <Route index element={<KanbanBoard/>}/>
+        </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="otpVerification/:id" element={<OtpVerification />} />
