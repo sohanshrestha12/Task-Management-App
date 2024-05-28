@@ -50,31 +50,42 @@ const UserController = {
     }
   },
 
-  async resendOtp(req:Request,res:Response,next:NextFunction){
-    const {id} = req.params;
+  async resendOtp(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
     try {
       const result = await UserService.resendOtp(id);
-       return successResponse({
-         response: res,
-         message: "Otp code sent successfully",
-         data: result,
-       });
+      return successResponse({
+        response: res,
+        message: "Otp code sent successfully",
+        data: result,
+      });
     } catch (error) {
       next(error);
     }
   },
 
-  async getCurrentUser(req:Request,res:Response,next:NextFunction){
+  async getCurrentUser(req: Request, res: Response, next: NextFunction) {
     try {
       const user = res.locals.user;
       return successResponse({
-        response:res,
-        message:"Retrieved Logged In user successfully",
-        data:user
-      })
+        response: res,
+        message: "Retrieved Logged In user successfully",
+        data: user,
+      });
     } catch (error) {
       next(error);
-      console.log(error);
+    }
+  },
+  async getAllAssignee(req:Request,res:Response,next:NextFunction){
+    try {
+      const assignee = await UserService.getAllAssignee();
+      return successResponse({
+        response: res,
+        message: "Retrieved assignee successfully",
+        data: assignee,
+      });
+    } catch (error) {
+      next(error);
     }
   }
 };

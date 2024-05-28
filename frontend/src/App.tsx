@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./Layout/Layout";
 import { AuthProvider } from "./components/Auth/ProtectedRoutes";
+import RequireAuth from "./components/Auth/RequireAuth";
+import View from "./components/View";
 import Login from "./pages/Login";
 import OtpVerification from "./pages/OtpVerification";
 import Register from "./pages/Register";
-import RequireAuth from "./components/Auth/RequireAuth";
-import KanbanBoard from "./components/KanbanBoard";
 const App = () => {
   return (
     <AuthProvider>
@@ -18,7 +18,7 @@ const App = () => {
             </RequireAuth>
           }
         >
-          <Route index element={<KanbanBoard/>}/>
+          <Route index element={<View/>}/>
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />

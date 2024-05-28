@@ -1,6 +1,6 @@
 import { Task } from "@/Types/KanbanBoard";
 import { useSortable } from "@dnd-kit/sortable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -13,6 +13,10 @@ interface TaskCardProps {
 const TaskCard = ({ task, deleteTask, updateTask }: TaskCardProps) => {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
+
+  useEffect(()=>{
+    console.log('task',task);
+  },[task])
 
   const {
     setNodeRef,
@@ -65,7 +69,7 @@ const TaskCard = ({ task, deleteTask, updateTask }: TaskCardProps) => {
             if (e.key === "Enter") toggleEditMode();
           }}
           onChange={(e) => updateTask(task.id, e.target.value)}
-          value={task.content}
+          value={task.description}
           className=" transparent h-[90%] w-full resize-none border-none rounded focus:outline-none"
           name=""
           id=""
@@ -89,7 +93,7 @@ const TaskCard = ({ task, deleteTask, updateTask }: TaskCardProps) => {
       className="bg-white relative p-2.5 h-[100px] min-h-[100px] items-center flex text-left rounded-xl hover:ring-2 hover:ring-green-500 cursor-grab"
     >
       <p className="my-auto h-[90%] w-full overflow-y-auto  whitespace-pre-wrap pe-10 break-words">
-        {task.content}
+        {task.description}
       </p>
 
       {mouseIsOver && (

@@ -1,6 +1,6 @@
 import CustomError from "../../../utils/Error";
 import { Task } from "./model";
-import { createTask, deleteTask, getAllTask, getTaskById } from "./repository";
+import { BulkDelete, createTask, deleteTask, getAllTask, getTaskById } from "./repository";
 
 export const TaskService = {
     createTask(data:Task,userId:string){
@@ -21,5 +21,8 @@ export const TaskService = {
             throw new CustomError("You don't have access to delete the task",403);
         }
         return res;
+    },
+    async BulkDelete(body:Task[]){
+        return BulkDelete(body);
     }
 }

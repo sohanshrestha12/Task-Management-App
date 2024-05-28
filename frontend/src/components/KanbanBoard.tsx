@@ -41,9 +41,9 @@ const KanbanBoard = () => {
     }
   },[]);
 
-  const generateId = () => {
-    return Math.floor(Math.random() * 10001).toString();
-  };
+  // const generateId = () => {
+  //   return Math.floor(Math.random() * 10001).toString();
+  // };
   // const createNewColumn = () => {
   //   const columnToAdd: Column = {
   //     id: generateId(),
@@ -157,17 +157,17 @@ const KanbanBoard = () => {
     setTasks(newTask);
   };
 
-  const createTask = (columnId: string) => {
-    const newTask: Task = {
-      id: generateId(),
-      columnId,
-      content: `Task ${tasks.length + 1}`,
-    };
-    setTasks([...tasks, newTask]);
-  };
+  // const createTask = (columnId: string) => {
+  //   const newTask: Task = {
+  //     id: generateId(),
+  //     columnId,
+  //     content: `Task ${tasks.length + 1}`,
+  //   };
+  //   setTasks([...tasks, newTask]);
+  // };
 
   return (
-    <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden px-10">
+    <div className="m-auto flex min-h-screen w-screen items-center overflow-x-auto overflow-y-hidden px-10">
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -182,8 +182,8 @@ const KanbanBoard = () => {
                   column={col}
                   // deleteColumn={deleteColumn}
                   updateColumn={updateColumn}
-                  createTask={createTask}
-                  tasks={tasks.filter((task) => task.columnId === col.id)}
+                  // createTask={createTask}
+                  tasks={tasks.filter((task) => task.status === col.id)}
                   updateTask={updateTask}
                   deleteTask={deleteTask}
                   key={col.id}
@@ -205,7 +205,7 @@ const KanbanBoard = () => {
               <KanbanColumnContainer
                 updateColumn={updateColumn}
                 column={activeColumn}
-                createTask={createTask}
+                // createTask={createTask}
                 tasks={tasks.filter(
                   (task) => task.columnId === activeColumn.id
                 )}

@@ -24,3 +24,4 @@ export const removeTag = (
 ): Promise<Tags | null> => {
   return TagModel.findOneAndDelete({ _id: id, initiator: user });
 };
+

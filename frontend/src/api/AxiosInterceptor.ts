@@ -5,7 +5,7 @@ TaskUrl.interceptors.request.use(
     (config)=>{
         const accessToken = Cookies.get('accessToken');
         if(accessToken){
-            console.log('interceptor');
+            console.log('interceptor',accessToken);
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
         return config;

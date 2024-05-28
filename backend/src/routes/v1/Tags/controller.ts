@@ -110,6 +110,7 @@ const TagsController = {
       next(error);
     }
   },
+ 
 };
 
 export default TagsController;

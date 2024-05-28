@@ -24,7 +24,7 @@ const TaskController = {
   },
   async getAllTask (req:Request,res:Response,next:NextFunction){
     try {
-      const result = await TaskService.getAllTask();
+      const result = (await TaskService.getAllTask()).slice().reverse();
       return successResponse({
         response:res,
         message:"Successfully retrieved all tasks",
@@ -60,6 +60,20 @@ const TaskController = {
         data:result,
         status:200
       })
+    } catch (error) {
+      next(error);
+    }
+  },
+  async BulkDelete(req:Request<unknown,unknown,Task[]>,res:Response,next:NextFunction){
+    try {
+      const body = req.body;
+      const result = await TaskService.BulkDelete(body);
+       return successResponse({
+         response: res,
+         message: "Bulk Task Deleted Successfully",
+         data: result,
+         status: 200,
+       });
     } catch (error) {
       next(error);
     }

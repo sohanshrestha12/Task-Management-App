@@ -4,6 +4,7 @@ import { User } from "./model";
 import { deleteOtp, storeUserOtp } from "./otpVerification/repository";
 import {
   createUserRepo,
+  getAllAssignee,
   getUserById,
   updateUserVerification,
 } from "./repository";
@@ -48,5 +49,8 @@ const UserService = {
       throw new CustomError("The Otp to be deleted not found", 404);
     return deletedOtp;
   },
+  async getAllAssignee(){
+    return await getAllAssignee();
+  }
 };
 export default UserService;

@@ -1,7 +1,7 @@
 import CustomError from "../../../utils/Error";
 import { addTagsToTask, removeTagFromTask } from "../Task/repository";
 import { Tags } from "./models";
-import { createTags, editTag, getTag, removeTag } from "./repository";
+import { createTags, editTag,  getTag, removeTag } from "./repository";
 
 const TagsService = {
   async createTags(data: Tags, taskId: string, userId: string) {
@@ -32,5 +32,6 @@ const TagsService = {
     const removeTagTask = await removeTagFromTask(id, taskID);
     return { res, removeTagTask };
   },
+
 };
 export default TagsService;

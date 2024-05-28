@@ -22,4 +22,8 @@ export const getCurrentUser = () => {
   return TaskUrl.get("/users/getCurrentUser");
 };
 
+export const logout = ()=>{
+    return TaskUrl.post("/auth/logout");
+}
+
 

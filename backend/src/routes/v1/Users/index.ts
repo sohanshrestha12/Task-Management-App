@@ -8,5 +8,6 @@ UserRouter.route('/').post(UserController.createUser);
 UserRouter.route('/verifyOtp/:id/:code').post(UserController.verifyOtp);
 UserRouter.route('/resendOtp/:id').post(UserController.resendOtp);
 UserRouter.route('/getCurrentUser').get(requireUser, UserController.getCurrentUser);
+UserRouter.route('/getAllAssignee').get(requireUser,UserController.getAllAssignee);
 
 export default UserRouter;

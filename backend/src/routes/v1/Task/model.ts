@@ -1,8 +1,9 @@
-import { TaskStatus } from "../../../enums/Status-priority.enum";
+import { TaskStatus } from "../../../enums/Task-status.enum";
 import { TaskPriority } from "../../../enums/Task-priority.enum";
 import mongoose from "mongoose";
 
 export interface Task{
+  _id?:string
     title:string,
     description:string,
     dueDate:Date,
@@ -23,9 +24,6 @@ const TaskSchema = new mongoose.Schema<Task>({
   description: {
     type: String,
     required: true,
-  },
-  dueDate: {
-    type: Date,
   },
   priority: {
     type: String,
@@ -56,13 +54,18 @@ const TaskSchema = new mongoose.Schema<Task>({
   }],
   tags:[{
     type:mongoose.Schema.Types.ObjectId,
-    ref:'tags',
+    ref:'tag',
     required:false,
   }],
   isDeleted:{
     type:Boolean,
     default:false,
-  }
+  },
+  dueDate:{
+    type:Date,
+    required:true,
+    unique:false
+  },
 },{
     timestamps:true,
 });

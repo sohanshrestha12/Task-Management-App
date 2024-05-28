@@ -9,7 +9,7 @@ interface KanbanColumnContainerProps {
   column: Column;
 //   deleteColumn: (id: string) => void;
   updateColumn: (id: string, title: string) => void;
-  createTask: (columnId: string) => void;
+//   createTask: (columnId: string) => void;
   updateTask: (id: string, content: string) => void;
   deleteTask: (id: string) => void;
   tasks: Task[];
@@ -19,7 +19,7 @@ const KanbanColumnContainer = (props: KanbanColumnContainerProps) => {
     column,
     // deleteColumn,
     updateColumn,
-    createTask,
+    // createTask,
     tasks,
     deleteTask,
     updateTask,
@@ -112,9 +112,9 @@ const KanbanColumnContainer = (props: KanbanColumnContainerProps) => {
         </SortableContext>
       </div>
       <button
-        onClick={() => {
-          createTask(column.id);
-        }}
+        // onClick={() => {
+        //   createTask(column.id);
+        // }}
         className="flex gap-2 items-center justify-center bg-white border-white border-2 rounded-md p-2 hover:bg-gray-200"
       >
         <IoMdAddCircleOutline />

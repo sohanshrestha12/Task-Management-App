@@ -1,5 +1,6 @@
 import mongoose,{Document} from "mongoose";
 import bcrypt from 'bcrypt';
+import { UserRoles } from "../../../enums/User-role.enum";
 
 
 export interface User {
@@ -36,7 +37,9 @@ const userSchema = new mongoose.Schema<UserDocument>(
     },
     role: {
       type: String,
+      enum:Object.values(UserRoles),
       required: false,
+      default:UserRoles.USER
     },
     isVerified: {
       type: String,
