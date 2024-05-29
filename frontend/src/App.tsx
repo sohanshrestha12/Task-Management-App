@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import OtpVerification from "./pages/OtpVerification";
 import Register from "./pages/Register";
 const App = () => {
+  console.log('hello world from app');
   return (
     <AuthProvider>
       <Routes>

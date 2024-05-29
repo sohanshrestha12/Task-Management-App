@@ -1,35 +1,35 @@
 "use client";
 
+import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import ActionCell from "./ActionCell";
+
 
 
 export interface Task {
-  assignee: [{ username: string }];
-  assigner: string;
-  comments: [];
-  createdAt: string;
+  assignee?: [{_id?:string; username: string }];
+  assigner?: string;
+  comments?: [];
+  createdAt?: string;
   description: string;
-  dueDate:string;
-  isDeleted: boolean;
+  dueDate: string;
+  isDeleted?: boolean;
   priority: "LOW" | "MEDIUM" | "HIGH";
   status: "TODO" | "INPROGRESS" | "TESTING" | "COMPLETED";
-  tags: [{title:string}];
+  tags: [{ _id:string,title: string }];
   title: string;
-  updatedAt: string;
-  __v: number;
+  updatedAt?: string;
+  __v?: number;
   _id: string;
 }
 
-
-
 //sorting function(custom)
-const customSortPriority = (rowA:string,rowB:string)=>{
-  const order =["LOW","MEDIUM","HIGH"];
+const customSortPriority = (rowA: string, rowB: string) => {
+  const order = ["LOW", "MEDIUM", "HIGH"];
   return order.indexOf(rowA) - order.indexOf(rowB);
-}
+};
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -55,14 +55,11 @@ export const columns: ColumnDef<Task>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "_id",
-    header: "Id",
-  },
-  {
     accessorKey: "title",
     header: ({ column }) => {
       return (
-        <Button className="p-0"
+        <Button
+          className="p-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -93,7 +90,8 @@ export const columns: ColumnDef<Task>[] = [
     accessorKey: "priority",
     header: ({ column }) => {
       return (
-        <Button className="p-0"
+        <Button
+          className="p-0"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -102,9 +100,12 @@ export const columns: ColumnDef<Task>[] = [
         </Button>
       );
     },
-    sortingFn: (rowA,rowB,columnId) =>{
-      return customSortPriority(rowA.getValue(columnId),rowB.getValue(columnId));
-    }
+    sortingFn: (rowA, rowB, columnId) => {
+      return customSortPriority(
+        rowA.getValue(columnId),
+        rowB.getValue(columnId)
+      );
+    },
   },
   {
     accessorKey: "tags",
@@ -116,5 +117,13 @@ export const columns: ColumnDef<Task>[] = [
       }
       return "";
     },
+  },
+  {
+    accessorKey: "dueDate",
+    header: "Due Date",
+  },
+  {
+    id: "actions",
+    cell: ActionCell
   },
 ];

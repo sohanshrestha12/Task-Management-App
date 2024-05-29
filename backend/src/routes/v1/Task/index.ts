@@ -8,6 +8,7 @@ TaskRouter.route('/').post(requireUser,TaskController.createTask);
 TaskRouter.route('/').get(requireUser,TaskController.getAllTask);
 TaskRouter.route('/:id').get(requireUser,TaskController.getTaskById);
 TaskRouter.route('/:id').delete(requireUser,TaskController.deleteTask);
+TaskRouter.route('/:id').patch(requireUser,TaskController.updateTask);
 TaskRouter.route('/').delete(requireUser,TaskController.BulkDelete);
 
 export default TaskRouter;

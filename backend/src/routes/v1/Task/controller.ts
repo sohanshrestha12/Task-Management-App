@@ -77,6 +77,21 @@ const TaskController = {
     } catch (error) {
       next(error);
     }
+  },
+  async updateTask(req:Request<{id:string},unknown,Task>,res:Response,next:NextFunction){
+    try {
+      const {id} = req.params;
+      const body = req.body;
+      const result = await TaskService.updateTask(body,id);
+       return successResponse({
+         response: res,
+         message: "Updated Task Successfully",
+         data: result,
+         status: 200,
+       });
+    } catch (error) {
+      next(error);
+    }
   }
 };
 export default TaskController;

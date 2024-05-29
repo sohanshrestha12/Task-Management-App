@@ -87,6 +87,19 @@ const UserController = {
     } catch (error) {
       next(error);
     }
+  },
+  async getUserById(req:Request<{id:string},unknown,unknown>,res:Response,next:NextFunction){
+    try {
+      const {id} = req.params;
+      const user = await UserService.getUserById(id);
+      return successResponse({
+        response:res,
+        message:"Retrieved User successfully",
+        data:user
+      })
+    } catch (error) {
+      next(error);
+    }
   }
 };
 

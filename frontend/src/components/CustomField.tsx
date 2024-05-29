@@ -2,10 +2,10 @@ import { ErrorMessage, Field, FieldProps } from "formik"
 import { Input } from "./ui/input"
 
 interface CustomFieldProps{
-    label:string,
+    label?:string,
     name:string,
     type:string,
-    placeholder:string
+    placeholder?:string
 }
 const CustomField = ({label,name,type,placeholder}:CustomFieldProps) => {
   return (

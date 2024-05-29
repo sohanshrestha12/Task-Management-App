@@ -71,3 +71,7 @@ export const BulkDelete=(data:Task[]) => {
   const idsToDelete = data.map((task) => task._id);
   return TaskModel.deleteMany({ _id: { $in: idsToDelete } });
 }
+
+export const updateTask = (data:Task,id:string)=>{
+  return TaskModel.findByIdAndUpdate(id,data,{new:true}).populate("assignee").populate("tags");
+}

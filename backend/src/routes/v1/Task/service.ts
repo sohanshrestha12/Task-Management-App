@@ -1,6 +1,6 @@
 import CustomError from "../../../utils/Error";
 import { Task } from "./model";
-import { BulkDelete, createTask, deleteTask, getAllTask, getTaskById } from "./repository";
+import { BulkDelete, createTask, deleteTask, getAllTask, getTaskById, updateTask } from "./repository";
 
 export const TaskService = {
     createTask(data:Task,userId:string){
@@ -24,5 +24,16 @@ export const TaskService = {
     },
     async BulkDelete(body:Task[]){
         return BulkDelete(body);
+    },
+    async updateTask(body:Task,id:string){
+        await this.getTaskById(id);
+        const res = await updateTask(body,id);
+         if (!res) {
+           throw new CustomError(
+             "The requested task is not found",
+             404
+           );
+         }
+         return res;
     }
 }
