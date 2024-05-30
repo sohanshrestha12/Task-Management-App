@@ -4,6 +4,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./Auth/ProtectedRoutes";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,6 +25,7 @@ const Navbar = () => {
     try {
       await logout();
       auth.logout();
+      toast.success("Logged out Successfully");
       navigate('/login');
     } catch (error) {
       console.log(error);

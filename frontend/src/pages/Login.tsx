@@ -7,35 +7,38 @@ import { Button } from "@/components/ui/button";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {loginValidation} from '@/Validation/LoginValidation'
+import { loginValidation } from "@/Validation/LoginValidation";
+import { toast } from "sonner";
 const initialValues = {
   email: "",
   password: "",
 };
 
-  const Login = () => {
-    const auth= useAuth();
-    const navigate = useNavigate();
+const Login = () => {
+  const auth = useAuth();
+  const navigate = useNavigate();
 
-    useEffect(()=>{
-      if(auth.user){
-        navigate('/');
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/");
+    }
+  }, [auth.user]);
+
+  const handleSubmit = async (values: LoginUser) => {
+    try {
+      const response = await login(values);
+      if (response) {
+        const userResponse = await getCurrentUser();
+        auth.login(userResponse.data.data);
       }
-    },[auth.user]);
-    
-    const handleSubmit = async (values: LoginUser) => {
-      try {
-        const response = await login(values);
-        if(response){
-           const userResponse = await getCurrentUser();
-           auth.login(userResponse.data.data);
-        }
-        navigate("/",{replace:true});
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      navigate("/", { replace: true });
+      toast.success("Log In Successfully");
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       {/* old login */}

@@ -40,6 +40,7 @@ import { FaTrash } from "react-icons/fa";
 import { bulkDelete } from "@/api/Task";
 import { Task } from "./columns";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export function DataTable<TData extends Task, TValue>({
   columns,
@@ -83,6 +84,8 @@ export function DataTable<TData extends Task, TValue>({
       const response = await bulkDelete(selectedRowsData);
       console.log(response);
       onDelete(selectedRowsData);
+      setRowSelection({});
+      toast.success('rows deleted successfully');
     } catch (error) {
       console.log(error);
     }
@@ -190,6 +193,7 @@ export function DataTable<TData extends Task, TValue>({
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
+        
         <div
           onClick={handledelete}
           className="px-4 rounded-xl py-2 bg-red-600 cursor-pointer hover:bg-red-500 transition-all"

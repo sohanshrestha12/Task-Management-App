@@ -10,7 +10,7 @@ import ActionCell from "./ActionCell";
 
 export interface Task {
   assignee?: [{_id?:string; username: string }];
-  assigner?: string;
+  assigner: string;
   comments?: [];
   createdAt?: string;
   description: string;
@@ -106,6 +106,24 @@ export const columns: ColumnDef<Task>[] = [
         rowB.getValue(columnId)
       );
     },
+    cell: ({ row }) => {
+      const priority = row.original.priority;
+      let color = "";
+      switch (priority) {
+        case "LOW":
+          color = "green"; 
+          break;
+        case "MEDIUM":
+          color = "orange"; 
+          break;
+        case "HIGH":
+          color = "red";
+          break;
+        default:
+          color = "black"; 
+      }
+      return <span style={{ color }}>{priority}</span>;
+    },
   },
   {
     accessorKey: "tags",
@@ -124,6 +142,6 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: "actions",
-    cell: ActionCell
+    cell: ActionCell,
   },
 ];

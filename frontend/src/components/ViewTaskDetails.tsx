@@ -1,15 +1,16 @@
+import { User } from "@/Types/Auth";
+import { getUserById } from "@/api/User";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  //   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Task } from "./GridView/columns";
 import { useEffect, useState } from "react";
-import { getUserById } from "@/api/User";
-import { User } from "@/Types/Auth";
+import { Task } from "./GridView/columns";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 interface ViewTaskDetailsProps {
   isOpen: boolean;
@@ -22,21 +23,39 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
   onClose,
   task,
 }) => {
-  const [assignee, setAssignee] = useState<User>();
+  const [assignee, setAssignee] = useState<User[]>([]);
   const [assigner, setAssigner] = useState<User>();
   const fetchName = async (
     id: string,
-    setter: React.Dispatch<React.SetStateAction<User | undefined>>
+    setter: React.Dispatch<React.SetStateAction< User[] >>
   ) => {
     try {
       const response = await getUserById(id);
-      setter(response.data.data);
+      setter(prevData => {
+          if (Array.isArray(prevData)) {
+            return [...prevData, response.data.data];
+          } else if (prevData) {
+            return [prevData, response.data.data];
+          } else {
+            return response.data.data;
+          }
+      });
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fetchAssigner = async(id:string) =>{
+    try {
+      const response = await getUserById(id);
+      setAssigner(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
   useEffect(() => {
-    fetchName(task.assigner,setAssigner);
+    fetchAssigner(task.assigner);
     if(task.assignee){
         task.assignee.forEach((assignee) => {
             if(assignee._id){
@@ -45,6 +64,10 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
         });
     }
   }, [task]);
+  useEffect(()=>{
+    console.log("this is view details assignee",assignee);
+    console.log("this is view details assigner",assigner);
+  })
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -54,60 +77,69 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
           <DialogTitle className="text-2xl font-bold">Task Details</DialogTitle>
           <DialogDescription>
             <div className="mt-4">
-              <p>
-                <span className="text-lg font-semibold text-black">
-                  Title :
-                </span>
-                <span className="pl-2">{task.title}</span>
-              </p>
+              <label className="text-black">Title</label>
+              <Input
+                className="border-2 border-gray-700 text-black"
+                type="text"
+                disabled
+                value={task.title}
+              ></Input>
             </div>
             <div className="mt-3">
-              <p>
-                <span className="text-lg font-semibold text-black">
-                  Description :
-                </span>
-                <span className="pl-2">{task.description}</span>
-              </p>
+              <label className="text-black">Description</label>
+              <Textarea
+                className="border-2 border-gray-700 text-black"
+                disabled
+              >
+                {task.description}
+              </Textarea>
             </div>
             <div className="mt-3">
-              <p>
-                <span className="text-xl font-semibold text-black">
-                  Assigner:
-                </span>
-                <span className="pl-2">{assigner?.username}</span>
-              </p>
+              <label className="text-black">Assigner</label>
+              <Input
+                className="border-2 border-gray-700 text-black"
+                type="text"
+                disabled
+                value={assigner?.username}
+              ></Input>
             </div>
             <div className="mt-3">
-              <p>
-                <span className="text-xl font-semibold text-black">
-                  Assignee :
-                </span>
-                <span className="pl-2">{assignee?.username}</span>
-              </p>
+              <label className="text-black">Assignee</label>
+              <Input
+                className="border-2 border-gray-700 text-black"
+                type="text"
+                disabled
+                value={[
+                  ...new Set(assignee?.map((assignee) => assignee.username)),
+                ]}
+              ></Input>
             </div>
             <div className="mt-3">
-              <p>
-                <span className="text-xl font-semibold text-black">
-                  Priority :
-                </span>
-                <span className="pl-2">{task.priority}</span>
-              </p>
+              <label className="text-black">Priority</label>
+              <Input
+                className="border-2 border-gray-700 text-black"
+                type="text"
+                disabled
+                value={task.priority}
+              ></Input>
             </div>
             <div className="mt-3">
-              <p>
-                <span className="text-xl font-semibold text-black">
-                  Status :
-                </span>
-                <span className="pl-2">{task.status}</span>
-              </p>
+              <label className="text-black">Status</label>
+              <Input
+                className="border-2 border-gray-700 text-black"
+                type="text"
+                disabled
+                value={task.status}
+              ></Input>
             </div>
             <div className="mt-3">
-              <p>
-                <span className="text-xl font-semibold text-black">
-                  Due Date :
-                </span>
-                <span className="pl-2">{task.dueDate}</span>
-              </p>
+              <label className="text-black">Due Date</label>
+              <Input
+                className="border-2 border-gray-700 text-black"
+                type="text"
+                disabled
+                value={task.dueDate}
+              ></Input>
             </div>
           </DialogDescription>
         </DialogHeader>
