@@ -1,5 +1,3 @@
-import { User } from "@/Types/Auth";
-import { tag } from "@/Types/Tag";
 import { UpdateValidation } from "@/Validation/TaskValidation";
 import { getAllTags } from "@/api/Tag";
 import { getAllAssignee, updateTask } from "@/api/Task";
@@ -26,6 +24,7 @@ import CustomField from "./CustomField";
 import CustomTextarea from "./CustomTextarea";
 import { DatePickerDemo } from "./DatePicker";
 import { Task } from "./GridView/columns";
+import { MultiSelectAssignee, MultiSelectTags } from "./MultiSelect";
 import { useTasks } from "./context/taskContext";
 import { Button } from "./ui/button";
 
@@ -37,7 +36,7 @@ interface ViewTaskDetailsProps {
 export interface FormValues {
   _id: string;
   title: string;
-  assignee: { _id?: string; username: string }[];
+  assignee: [{_id?:string,username:string}];
   description: string;
   priority: string;
   status: string;
@@ -80,16 +79,11 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
   const initialValues: FormValues = {
     _id: task._id,
     title: task.title,
-    assignee: [
-      {
-        _id: task.assignee?.[0]._id,
-        username: task.assignee?.[0].username || "",
-      },
-    ],
+    assignee:task.assignee ? task.assignee : [{ _id: '', username: '' }],
     description: task.description,
     priority: task.priority,
     status: task.status,
-    tags: [{ _id: task.tags[0]._id, title: task.tags[0].title }],
+    tags: task.tags?task.tags:[{_id:"",title:''}],
     dueDate: dueDateISO,
   };
   const [assignee, setAssignee] = useState([]);
@@ -135,6 +129,7 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
     }
     console.log(values);
   };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
@@ -226,7 +221,7 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                     </div>
                     <div className="mt-4">
                       <label className="mb-2">Assignee</label>
-                      <Field name="assignee">
+                      {/* <Field name="assignee">
                         {({ field }: FieldProps) => (
                           <Select
                             onValueChange={(value) =>
@@ -247,6 +242,22 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                             </SelectContent>
                           </Select>
                         )}
+                      </Field> */}
+                      <Field name="assignee">
+                        {({ field }: FieldProps) => (
+                          <MultiSelectAssignee
+                            assignee={assignee}
+                            defaultValue={initialValues.assignee.map(
+                              (assignee) => ({
+                                value: assignee?._id || "",
+                                label: assignee.username || "",
+                                key: assignee._id || "",
+                              })
+                            )}
+                            field={field}
+                            setFieldValue={setFieldValue}
+                          />
+                        )}
                       </Field>
                       <div className="text-red-500 text-sm mt-2">
                         <ErrorMessage name="assignee" />
@@ -254,7 +265,7 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                     </div>
                     <div className="mt-4">
                       <label className="mb-2">Tag</label>
-                      <Field name="tags">
+                      {/* <Field name="tags">
                         {({ field }: FieldProps) => (
                           <Select
                             defaultValue={initialValues.tags[0]._id}
@@ -274,6 +285,22 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                                 ))}
                             </SelectContent>
                           </Select>
+                        )}
+                      </Field> */}
+                      <Field name="tags">
+                        {({ field }: FieldProps) => (
+                          <MultiSelectTags
+                            tags={tag}
+                            defaultValue={initialValues.tags.map(
+                              (tag) => ({
+                                value: tag?._id || "",
+                                label: tag.title || "",
+                                key: tag._id || "",
+                              })
+                            )}
+                            field={field}
+                            setFieldValue={setFieldValue}
+                          />
                         )}
                       </Field>
                       <div className="text-red-500 text-sm mt-2">
