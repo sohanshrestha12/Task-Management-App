@@ -16,7 +16,7 @@ const CustomField = ({label,name,type,placeholder}:CustomFieldProps) => {
           <Input type={type} placeholder={placeholder} {...field}></Input>
         )}
       </Field>
-      <div className="text-red-500 -mt-2">
+      <div className="text-red-500 -mt-2 text-sm">
         <ErrorMessage name={name} />
       </div>
     </div>

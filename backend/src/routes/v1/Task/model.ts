@@ -1,6 +1,6 @@
-import { TaskStatus } from "../../../enums/Task-status.enum";
-import { TaskPriority } from "../../../enums/Task-priority.enum";
 import mongoose from "mongoose";
+import { TaskPriority } from "../../../enums/Task-priority.enum";
+import { TaskStatus } from "../../../enums/Task-status.enum";
 
 export interface Task{
   _id?:string

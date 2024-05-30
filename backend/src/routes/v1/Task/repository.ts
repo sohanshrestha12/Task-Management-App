@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 import { Task, TaskModel } from "./model";
 
 export const createTask = async (data: Task, userId: string): Promise<Task> => {
-  const tagArray = [data.tags];
-  const task = new TaskModel({ ...data, tags: tagArray, assigner: userId });
+  const task = new TaskModel({ ...data, assigner: userId });
   const newTask = await task.save();
   await newTask.populate("tags");
   await newTask.populate("assignee");

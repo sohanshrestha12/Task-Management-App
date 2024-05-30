@@ -1,3 +1,8 @@
+import { User } from "@/Types/Auth";
+import { tag } from "@/Types/Tag";
+import { UpdateValidation } from "@/Validation/TaskValidation";
+import { getAllTags } from "@/api/Tag";
+import { getAllAssignee, updateTask } from "@/api/Task";
 import {
   Dialog,
   DialogContent,
@@ -12,21 +17,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Field, FieldProps, Form, Formik } from "formik";
-import { Task } from "./GridView/columns";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { ErrorMessage, Field, FieldProps, Form, Formik } from "formik";
+import moment from "moment";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import CustomField from "./CustomField";
 import CustomTextarea from "./CustomTextarea";
-import { useEffect, useRef, useState } from "react";
-import { getAllAssignee, updateTask } from "@/api/Task";
-import { User } from "@/Types/Auth";
-import { getAllTags } from "@/api/Tag";
-import { tag } from "@/Types/Tag";
 import { DatePickerDemo } from "./DatePicker";
-import moment from "moment";
-import { Button } from "./ui/button";
+import { Task } from "./GridView/columns";
 import { useTasks } from "./context/taskContext";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { toast } from "sonner";
+import { Button } from "./ui/button";
 
 interface ViewTaskDetailsProps {
   isOpen: boolean;
@@ -137,13 +138,17 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent>
+      <DialogContent className="h-[80vh] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>
 
           <DialogDescription>
             <div className="mt-4">
-              <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+              <Formik
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={UpdateValidation}
+              >
                 {({ isSubmitting, setFieldValue }) => (
                   <Form className="text-black">
                     <CustomField name="_id" type="hidden" />
@@ -184,6 +189,9 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                             </Select>
                           )}
                         </Field>
+                        <div className="text-red-500 text-sm mt-2">
+                          <ErrorMessage name="priority" />
+                        </div>
                       </div>
                       <div className="flex flex-col flex-1">
                         <label className="mb-2">Status</label>
@@ -211,6 +219,9 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                             </Select>
                           )}
                         </Field>
+                        <div className="text-red-500 text-sm mt-2">
+                          <ErrorMessage name="status" />
+                        </div>
                       </div>
                     </div>
                     <div className="mt-4">
@@ -237,6 +248,9 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                           </Select>
                         )}
                       </Field>
+                      <div className="text-red-500 text-sm mt-2">
+                        <ErrorMessage name="assignee" />
+                      </div>
                     </div>
                     <div className="mt-4">
                       <label className="mb-2">Tag</label>
@@ -262,6 +276,9 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                           </Select>
                         )}
                       </Field>
+                      <div className="text-red-500 text-sm mt-2">
+                        <ErrorMessage name="tags" />
+                      </div>
                     </div>
                     <div className="mt-4 flex flex-col ">
                       <label className="mb-2">Due Date</label>
@@ -275,6 +292,9 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                           />
                         )}
                       </Field>
+                      <div className="text-red-500 text-sm mt-2">
+                        <ErrorMessage name="dueDate" />
+                      </div>
                     </div>
                     <div className="flex justify-end mt-4 gap-4">
                       <Button
@@ -285,7 +305,11 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                         Update
                       </Button>
                       <DialogClose asChild>
-                        <Button ref={dialogCloseRef} type="button" variant="secondary">
+                        <Button
+                          ref={dialogCloseRef}
+                          type="button"
+                          variant="secondary"
+                        >
                           Cancel
                         </Button>
                       </DialogClose>
