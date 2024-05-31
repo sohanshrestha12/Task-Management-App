@@ -62,6 +62,13 @@ const convertRelativeDate = (dateString: string) => {
       .day("Thursday")
       .toDate();
     return moment(formattedDate).startOf("day").toDate();
+  } else if (dateString.toLowerCase().includes("last")) {
+    const dayOfWeek = dateString.toLowerCase().split(" ")[1];
+    const daysToAdd =
+      currentDate.day() === moment().day(dayOfWeek).day()
+        ? 7
+        : (currentDate.day() - moment().day(dayOfWeek).day() + 7) % 7;
+    return currentDate.subtract(daysToAdd, "days").startOf("day").toDate();
   } else {
     return dateString;
   }

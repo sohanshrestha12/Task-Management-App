@@ -4,45 +4,46 @@ import CustomError, { errorHandler } from "../utils/Error";
 
 
 const castErrorHandler = (error: mongoose.Error.CastError) => {
-  const message = `API Validation Error`;
-  let errors: { [key: string]: string } = {};
-  errors[error.path] = "Invalid value"; //an object [] used when dynamic content or contains special character.
-  return new CustomError(message, 400, errors);
+  const message = `Invalid value for: ${error.path}`;
+  // let errors: { [key: string]: string } = {};
+  // errors[error.path] = "Invalid value"; //an object [] used when dynamic content or contains special character.
+  return new CustomError(message, 400);
 };
 
 const keyDuplicationError = (error: any) => {
-  const message = `API Validation Error`;
-  const errors: { [key: string]: string } = {};
-  for (const key in error.keyPattern) {
-    if (error.keyPattern.hasOwnProperty(key)) {
-      errors[key] = `This ${key.toLowerCase()} already exists`;
-    }
-  }
-  return new CustomError(message, 400, errors);
+  const message = `This ${Object.keys(error.keyPattern).join(", ")} already exists`;
+  // const errors: { [key: string]: string } = {};
+  // for (const key in error.keyPattern) {
+  //   if (error.keyPattern.hasOwnProperty(key)) {
+  //     errors[key] = `This ${key.toLowerCase()} already exists`;
+  //   }
+  // }
+  return new CustomError(message, 400);
 };
 
 const validationErrorHandler = (error: mongoose.Error.ValidationError) => {
-  const message = `API Validation Error`;
-  const validationsErrors: { [key: string]: string } = {};
-  Object.values(error.errors).forEach(
-    (el) => (validationsErrors[el.path] = error.message)
-  );
-  return new CustomError(message, 400, validationsErrors);
+  const message = ` ${Object.values(error.errors)
+    .map((el) => el.message)
+    .join(", ")}`;
+  // const validationsErrors: { [key: string]: string } = {};
+  // Object.values(error.errors).forEach(
+  //   (el) => (validationsErrors[el.path] = error.message)
+  // );
+  return new CustomError(message, 400);
 };
 
 const missingSchemaErrorHandler = (
   error: mongoose.Error.MissingSchemaError
 ) => {
-  const message = `Missing Schema Error`;
-  const errors: { [key: string]: string } = {};
-  errors[error.name] = "Schema not registered for this model";
-  return new CustomError(message, 500, errors);
+  const message = ` Schema not registered for this model`;
+  // const errors: { [key: string]: string } = {};
+  // errors[error.name] = "Schema not registered for this model";
+  return new CustomError(message, 500);
 };
 
 
 export const globalErrorHandler = (error:unknown,req:Request,res:Response,next:NextFunction)=>{
     let err:CustomError | null = null;
-
       if (
         typeof error === "object" &&
         error &&

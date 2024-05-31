@@ -51,6 +51,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
 
   const updateTasks = (updatedTask: Task) => {
     console.log('the recived task is:',updatedTask);
+    updatedTask.dueDate = moment(updatedTask.dueDate).calendar();
     const updatedTasks = tasks.map((task) => {
       if (task._id === updatedTask._id) {
         return updatedTask;
@@ -67,6 +68,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   const createTask = (newTasks: Task[]) => {
     setTasks(newTasks);
   };
+
+  
 
   return (
     <TaskContext.Provider

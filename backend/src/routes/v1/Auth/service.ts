@@ -9,6 +9,12 @@ const AuthService = {
   async login(data: Auth) {
     const user = await getUserByEmail(data.email);
     if (!user) throw new CustomError("Invalid user credentials", 401);
+    
+    
+    if(!user.isVerified) {
+      throw new CustomError("Not verified Yet",403)
+    };
+
 
     const isValid = await user.comparePassword(data.password);
     if (!isValid) throw new CustomError("Invalid user credentials", 401);

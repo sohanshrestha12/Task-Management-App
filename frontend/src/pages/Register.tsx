@@ -3,13 +3,13 @@ import { registerValidation } from "@/Validation/RegisterValidation";
 import { registerUser } from "@/api/Auth";
 import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import CustomField from "@/components/CustomField";
-import ErrorAlert from "@/components/ErrorAlert";
 import { Button } from "@/components/ui/button";
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import axios from "axios";
 import { Form, Formik, FormikHelpers } from "formik";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const initialValues = {
   username: "",
@@ -25,10 +25,10 @@ const Register = () => {
       navigate("/");
     }
   }, [auth.user]);
-  const [errorMessage, setErrorMessage] = useState("");
-  useEffect(() => {
-    setErrorMessage("");
-  }, []);
+  // const [errorMessage, setErrorMessage] = useState("");
+  // useEffect(() => {
+  //   setErrorMessage("");
+  // }, []);
   const onSubmit = async (
     values: RegisterUser,
     { setSubmitting }: FormikHelpers<RegisterUser>
@@ -38,11 +38,13 @@ const Register = () => {
       navigate(`/otpVerification/${response?.data?.data?.user?._id}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        if (error.response?.data?.data?.email) {
-          setErrorMessage(error.response?.data?.data?.email);
-        } else {
-          setErrorMessage(error.response?.data?.message);
-        }
+        console.log(error);
+        // if (error.response?.data?.message) {
+        //   setErrorMessage(error.response?.data?.message);
+        // } 
+        if (error.response?.data?.message) {
+          toast.error(error.response.data.message);
+        } 
       }
     } finally {
       setSubmitting(false);
@@ -103,11 +105,11 @@ const Register = () => {
 
       {/* New Register */}
       <div className=" flex flex-col justify-center items-center min-h-screen">
-        {errorMessage && (
+        {/* {errorMessage && (
           <div className="w-[450px]">
             <ErrorAlert message={errorMessage} />
           </div>
-        )}
+        )} */}
         <div className="flex justify-center bg-white rounded-2xl w-2/3 max-w-4xl">
           <div className="w-3/5 p-8 flex flex-col">
             <div className="text-left font-bold">

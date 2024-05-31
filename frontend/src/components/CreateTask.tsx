@@ -8,6 +8,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { User } from "@/Types/Auth";
+import { tag } from "@/Types/Tag";
 import { TaskValidation } from "@/Validation/TaskValidation";
 import { getAllTags } from "@/api/Tag";
 import { createTask, getAllAssignee } from "@/api/Task";
@@ -20,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { ErrorMessage, Field, FieldProps, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
+import { IoMdAddCircleOutline } from "react-icons/io";
 import { toast } from "sonner";
 import CustomField from "./CustomField";
 import CustomTextarea from "./CustomTextarea";
@@ -27,8 +30,6 @@ import { DatePickerDemo } from "./DatePicker";
 import { Task } from "./GridView/columns";
 import { MultiSelectAssignee, MultiSelectTags } from "./MultiSelect";
 import { Button } from "./ui/button";
-import { tag } from "@/Types/Tag";
-import { User } from "@/Types/Auth";
 
 interface CreateTask {
   assignee: User[];
@@ -101,8 +102,9 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
 
   return (
     <Sheet>
-      <SheetTrigger className="p-2 bg-green-500 text-white rounded-md">
-        Create Task
+      <SheetTrigger className="p-2 flex gap-2 flex-row-reverse justify-center items-center text-[20px] bg-green-500 text-white rounded-md">
+        <IoMdAddCircleOutline />
+        <p className="text-[16px]">Create Task</p>
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
         <SheetClose ref={sheetCloseRef} className="hidden">

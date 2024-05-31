@@ -3,7 +3,7 @@ import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMemo, useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import TaskCard from "./TaskCard";
+import TaskCard from "../TaskCard";
 
 interface KanbanColumnContainerProps {
   column: Column;

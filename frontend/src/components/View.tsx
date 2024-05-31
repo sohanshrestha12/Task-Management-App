@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import SwitchSelector from "react-switch-selector";
 import Page from "./GridView/Page";
-import KanbanBoard from "./KanbanBoard";
-import { TaskProvider } from "./context/taskContext";
+import KanbanBoard from "./Kanban/KanbanBoard";
 
 const View = () => {
   const [selectedComponent, setSelectedComponent] = useState(() => {
@@ -24,8 +23,7 @@ const View = () => {
   };
 
   return (
-    <TaskProvider>
-      <div className="w-[300px] h-[30px]">
+      <div className="w-[300px] h-[30px] col-start-3 col-span-6 mt-[100px] my-2">
         <SwitchSelector
           options={options}
           onChange={
@@ -37,8 +35,11 @@ const View = () => {
         />
         {selectedComponent === "kanban" && <KanbanBoard />}
         {selectedComponent === "grid" && <Page />}
+        {/* <Routes>
+          <Route path="/kanban" element={<KanbanBoard/>} />
+          <Route path="/grid" element={<Page/>} />
+        </Routes> */}
       </div>
-    </TaskProvider>
   );
 };
 

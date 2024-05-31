@@ -100,6 +100,21 @@ const UserController = {
     } catch (error) {
       next(error);
     }
+  },
+  async getUnverifiedUser(req:Request<{email:string},unknown,unknown>,res:Response,next:NextFunction){
+    try{
+      const {email} = req.params;
+      const user = await UserService.getUnverifiedUserByEmail(email);
+        return successResponse({
+          response: res,
+          message: "Retrieved Unverified User successfully",
+          data: user,
+        });
+
+
+    }catch(error){
+      next(error);
+    }
   }
 };
 

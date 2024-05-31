@@ -4,10 +4,11 @@ import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import CustomField from "@/components/CustomField";
 import { Button } from "@/components/ui/button";
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { loginValidation } from "@/Validation/LoginValidation";
+import axios from "axios";
 import { Form, Formik } from "formik";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginValidation } from "@/Validation/LoginValidation";
 import { toast } from "sonner";
 const initialValues = {
   email: "",
@@ -24,6 +25,10 @@ const Login = () => {
     }
   }, [auth.user]);
 
+  // const fetchUnverifiedUser =()=>{
+
+  // }
+
   const handleSubmit = async (values: LoginUser) => {
     try {
       const response = await login(values);
@@ -36,7 +41,17 @@ const Login = () => {
 
       console.log(response);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error)) {
+        toast.error(error?.response?.data?.message);
+        if(error.response?.data.message === "Not verified Yet" && error.response.data.status === 403){
+          console.log("User is not verified yet. Please verify")
+        }
+        console.log(error);
+      }
+      else if (error instanceof Error) {
+        console.error("An error occurred:", error);
+        toast.error("An error occurred");
+      }
     }
   };
   return (
@@ -110,6 +125,7 @@ const Login = () => {
                           label="Email"
                           placeholder="Email"
                           type="Text"
+                          disabled={false}
                         />
                       </div>
                       <div>
@@ -118,6 +134,7 @@ const Login = () => {
                           label="Password"
                           placeholder="Password"
                           type="password"
+                          disabled = {false}
                         />
                       </div>
                       <div className="self-end">

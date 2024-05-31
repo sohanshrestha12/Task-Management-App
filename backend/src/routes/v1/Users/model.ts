@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema<UserDocument>(
       default:UserRoles.USER
     },
     isVerified: {
-      type: String,
+      type: Boolean,
       required: false,
       default:false
     },

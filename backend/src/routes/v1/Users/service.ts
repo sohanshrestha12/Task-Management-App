@@ -5,6 +5,7 @@ import { deleteOtp, storeUserOtp } from "./otpVerification/repository";
 import {
   createUserRepo,
   getAllAssignee,
+  getUserByEmail,
   getUserById,
   updateUserVerification,
 } from "./repository";
@@ -51,6 +52,13 @@ const UserService = {
   },
   async getAllAssignee(){
     return await getAllAssignee();
+  },
+  async getUnverifiedUserByEmail(email:string){
+    const user = await getUserByEmail(email);
+    if(!user){
+      throw new CustomError("Invalid Email",403);
+    }
+    return user;
   }
 };
 export default UserService;

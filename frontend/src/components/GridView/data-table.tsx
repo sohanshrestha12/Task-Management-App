@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import {
   ColumnDef,
@@ -55,6 +56,8 @@ export function DataTable<TData extends Task, TValue>({
   const [rowSelection, setRowSelection] = React.useState<
     Record<number, boolean>
   >({});
+  const [pageSize,setPageSize] =React.useState(5);
+  const [pageIndex,setPageIndex] =React.useState(0);
   const table = useReactTable({
     data,
     columns,
@@ -69,8 +72,26 @@ export function DataTable<TData extends Task, TValue>({
       sorting,
       columnFilters,
       rowSelection,
+      pagination:{
+        pageIndex,
+        pageSize,
+      }
     },
   });
+
+     React.useEffect(() => {
+       console.log("Page Index:", table.getState().pagination.pageIndex);
+       console.log("Page Size:", table.getState().pagination.pageSize);
+       console.log("Can Next Page:", table.getCanNextPage());
+       console.log("Can Previous Page:", table.getCanPreviousPage());
+       console.log("Rows Length:", table.getRowModel().rows.length);
+     }, [
+       table.getState().pagination.pageIndex,
+       table.getState().pagination.pageSize,
+       table.getCanNextPage(),
+       table.getCanPreviousPage(),
+       table.getRowModel().rows.length,
+     ]);
   // console.log(rowSelection);
   // get the selected row data
 
@@ -174,7 +195,13 @@ export function DataTable<TData extends Task, TValue>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.previousPage()}
+          onClick={
+            () => {
+              setPageIndex((old) => Math.max(old - 1, 0));
+              table.previousPage()
+            }
+            
+          }
           disabled={!table.getCanPreviousPage()}
         >
           Previous
@@ -182,7 +209,9 @@ export function DataTable<TData extends Task, TValue>({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => table.nextPage()}
+          onClick={() => {
+            setPageIndex((old) => (!table.getCanNextPage() ? old : old + 1));
+            table.nextPage()}}
           disabled={!table.getCanNextPage()}
         >
           Next
@@ -193,7 +222,6 @@ export function DataTable<TData extends Task, TValue>({
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        
         <div
           onClick={handledelete}
           className="px-4 rounded-xl py-2 bg-red-600 cursor-pointer hover:bg-red-500 transition-all"

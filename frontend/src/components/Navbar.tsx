@@ -32,7 +32,7 @@ const Navbar = () => {
     }
   }
   return (
-    <nav className="bg-white flex justify-between items-center py-8 px-12">
+    <nav className="bg-white md:fixed md:w-full top-0 left-0 flex justify-between items-center py-8 px-12 z-10">
       <div>
         <h1 className="font-bold">Task Management Application</h1>
       </div>

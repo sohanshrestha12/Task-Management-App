@@ -44,7 +44,7 @@ const Page = () => {
     createTask([formattedNewTask,...tasks]);
   }
   return (
-    <div className="px-12 py-14 w-[98vw] overflow-x-hidden">
+    <div className="px-12 mt-[10px] py-14 ml-1 w-[82vw] col-span-12 col-start-3 rounded border border-white overflow-x-hidden bg-white">
       <div className="flex justify-between">
         <h1>All Tasks</h1>
         <CreateTask setNewTask={setNewTask} />
