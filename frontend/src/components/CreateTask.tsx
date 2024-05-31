@@ -56,6 +56,7 @@ interface CreateTaskProps {
 }
 
 const CreateTask = ({ setNewTask }: CreateTaskProps) => {
+  // const {createAssignedTask} = useTasks();
   const [assignee, setAssignee] = useState([]);
   const sheetCloseRef = useRef<HTMLButtonElement>(null);
   const [tag, setTags] = useState([]);
@@ -66,6 +67,7 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
       const newTask = await createTask(values);
       console.log("Created Task", newTask.data.data);
       setNewTask(newTask.data.data);
+      // createAssignedTask(newTask.data.data);
       toast.success("Task created Successfully");
       if (sheetCloseRef.current) {
         sheetCloseRef.current.click();
@@ -80,6 +82,7 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
       try {
         const response = await getAllAssignee();
         setAssignee(response.data.data);
+
         console.log("AllAssignee", response);
       } catch (error) {
         console.log(error);

@@ -43,27 +43,27 @@ const Navbar = () => {
       >
         <ul className="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8">
           <li>
-            <Link to="/" className="hover:text-gray-500">
+            <Link to="/" className="hover:text-gray-100">
               Home
             </Link>
           </li>
           <li>
-            <Link to="/" className="hover:text-gray-500">
+            <Link to="/" className="hover:text-gray-100">
               Tasks
             </Link>
           </li>
           <li>
-            <Link to="/" className="hover:text-gray-500">
+            <Link to="/" className="hover:text-gray-100">
               Help
             </Link>
           </li>
           <li>
-            <Link to="/" className="hover:text-gray-500">
+            <Link to="/" className="hover:text-gray-100">
               Contact
             </Link>
           </li>
           <li>
-            <Link to="/" className="hover:text-gray-500">
+            <Link to="/" className="hover:text-gray-100">
               Settings
             </Link>
           </li>

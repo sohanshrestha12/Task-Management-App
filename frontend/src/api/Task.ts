@@ -23,3 +23,10 @@ export const bulkDelete = (data:Task[]) =>{
 export const updateTask = (data:FormValues,taskId:string)=>{
   return TaskUrl.patch(`/tasks/${taskId}`,data);
 }
+
+export const getAssignedTask = ()=>{
+  return TaskUrl.get("/tasks/getAssignedTasks");
+}
+export const getAssignedTodo = (type:string)=>{
+  return TaskUrl.get(`/tasks/getAllTodos?type=${type}`);
+}

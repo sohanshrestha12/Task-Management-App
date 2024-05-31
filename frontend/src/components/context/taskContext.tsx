@@ -1,4 +1,4 @@
-import { getAllTasks } from "@/api/Task";
+import { getAllTasks, getAssignedTask, getAssignedTodo } from "@/api/Task";
 import moment from "moment";
 import {
   ReactNode,
@@ -8,18 +8,31 @@ import {
   useState,
 } from "react";
 import { Task } from "../GridView/columns";
+import { useAuth } from "../Auth/ProtectedRoutes";
 
 interface TaskContextValue {
   tasks: Task[];
+  assigned: Task[];
+  todoTask: Task[];
+  testingTask: Task[];
+  inProgressTask: Task[];
+  CompletedTask: Task[];
   updateTasks: (newTasks: Task) => void;
   deleteTasks: (remainingTasks: Task[]) => void;
   createTask: (newTasks: Task[]) => void;
+  // createAssignedTask:(newTasks:Task)=>void
 }
 const TaskContext = createContext<TaskContextValue>({
   tasks: [],
+  assigned: [],
+  todoTask: [],
+  inProgressTask: [],
+  testingTask: [],
+  CompletedTask: [],
   updateTasks: () => {},
   deleteTasks: () => {},
   createTask: () => {},
+  // createAssignedTask:()=>{}
 });
 
 interface TaskProviderProps {
@@ -28,7 +41,13 @@ interface TaskProviderProps {
 
 // Create context provider
 export const TaskProvider = ({ children }: TaskProviderProps) => {
+  const {user} = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [assigned,setAssignedTask] = useState<Task[]>([]);
+  const [todoTask,setTodoTask] = useState<Task[]>([]);
+  const [inProgressTask,setInProgressTask] = useState<Task[]>([]);
+  const [testingTask, setTestingTask] = useState<Task[]>([]);
+  const [CompletedTask, setCompletedTask] = useState<Task[]>([]);
 
   // Fetch tasks on component mount
   useEffect(() => {
@@ -69,11 +88,94 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     setTasks(newTasks);
   };
 
-  
+  // const createAssignedTask = (newTasks:Task)=>{
+  //   console.log(user?._id);
+  //   if(newTasks.assignee?.some(assignee=>assignee._id === user?._id)){
+  //     setAssignedTask([...assigned,newTasks]);
+  //   }
+  //   return;
+  // }
+
+  useEffect(()=>{
+    const  fetchAssignedTasks=async()=>{
+      try {
+        const assignedTasks = await getAssignedTask();
+        setAssignedTask(assignedTasks?.data?.data)
+        console.log("Assigned task is", assignedTasks);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAssignedTasks();
+  },[user])
+
+
+  useEffect(()=>{
+    const  fetchAssignedTodo=async()=>{
+      try {
+        const assignedTodo = await getAssignedTodo("TODO");
+        setTodoTask(assignedTodo?.data?.data);
+        console.log("Assigned Todo task is", assignedTodo);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAssignedTodo();
+  },[user])
+  useEffect(()=>{
+    const  fetchAssignedInProgress=async()=>{
+      try {
+        const assignedInProgress = await getAssignedTodo("INPROGRESS");
+        setInProgressTask(assignedInProgress?.data?.data);
+        console.log("Assigned in progress task is", assignedInProgress);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAssignedInProgress();
+  },[user])
+
+  useEffect(()=>{
+    const  fetchAssignedInProgress=async()=>{
+      try {
+        const assignedTesting = await getAssignedTodo("TESTING");
+        setTestingTask(assignedTesting?.data?.data);
+        console.log("Assigned in progress task is", assignedTesting);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAssignedInProgress();
+  },[user])
+
+
+  useEffect(()=>{
+    const  fetchAssignedCompleted=async()=>{
+      try {
+        const assignedCompleted = await getAssignedTodo("COMPLETED");
+        setCompletedTask(assignedCompleted?.data?.data);
+        console.log("Assigned in progress task is", assignedCompleted);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchAssignedCompleted();
+  },[user])
 
   return (
     <TaskContext.Provider
-      value={{ tasks, updateTasks, deleteTasks, createTask }}
+      value={{
+        assigned,
+        tasks,
+        todoTask,
+        inProgressTask,
+        testingTask,
+        CompletedTask,
+        updateTasks,
+        deleteTasks,
+        createTask,
+        // createAssignedTask,
+      }}
     >
       {children}
     </TaskContext.Provider>

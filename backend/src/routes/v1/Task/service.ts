@@ -1,6 +1,6 @@
 import CustomError from "../../../utils/Error";
 import { Task } from "./model";
-import { BulkDelete, createTask, deleteTask, getAllTask, getTaskById, updateTask } from "./repository";
+import { BulkDelete, createTask, deleteTask, getAllTask, getAssignedTStatus, getAssignedTasks, getTaskById, updateTask } from "./repository";
 
 export const TaskService = {
     createTask(data:Task,userId:string){
@@ -35,5 +35,11 @@ export const TaskService = {
            );
          }
          return res;
+    },
+    async getAssignedTasks(id:string){
+        return getAssignedTasks(id);
+    },
+    async getAssignedStatus(type:string,id:string){
+        return getAssignedTStatus(type,id);
     }
 }

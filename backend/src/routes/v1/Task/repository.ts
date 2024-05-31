@@ -74,3 +74,11 @@ export const BulkDelete=(data:Task[]) => {
 export const updateTask = (data:Task,id:string)=>{
   return TaskModel.findByIdAndUpdate(id,data,{new:true}).populate("assignee").populate("tags");
 }
+
+export const getAssignedTasks = (id:string)=>{
+  return TaskModel.find({assignee:id}).populate('assignee').populate('tags');
+}
+export const getAssignedTStatus = (type: string,id:string) => {
+  console.log(type);
+  return TaskModel.find({ assignee: id,status:type }).populate("assignee").populate("tags");
+};

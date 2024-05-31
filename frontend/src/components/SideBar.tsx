@@ -42,6 +42,14 @@ const SideBar = () => {
         <li className="w-full">
           <NavLink
             className="px-6 block w-full py-2 rounded-full text-gray-500 font-semibold hover:text-black hover:bg-gray-300"
+            to="/testing"
+          >
+            Testing
+          </NavLink>
+        </li>
+        <li className="w-full">
+          <NavLink
+            className="px-6 block w-full py-2 rounded-full text-gray-500 font-semibold hover:text-black hover:bg-gray-300"
             to="/completed"
           >
             Completed

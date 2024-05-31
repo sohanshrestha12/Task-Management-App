@@ -9,13 +9,11 @@ export const requireUser = async (
 ) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const user = res.locals.user as Object;
-
   let isValid = false;
   if (user && "_id" in user && typeof user._id === "string") {
     const userData = await getUserById(user._id);
     if (userData) isValid = true;
   }
-
   if (isValid) next();
   else {
     errorHandler(res, new CustomError("Unauthorized User", 401));
