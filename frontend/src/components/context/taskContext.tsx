@@ -20,6 +20,7 @@ interface TaskContextValue {
   updateTasks: (newTasks: Task) => void;
   deleteTasks: (remainingTasks: Task[]) => void;
   createTask: (newTasks: Task[]) => void;
+  KanbanTask:(newTasks:Task[])=>void;
   // createAssignedTask:(newTasks:Task)=>void
 }
 const TaskContext = createContext<TaskContextValue>({
@@ -32,6 +33,7 @@ const TaskContext = createContext<TaskContextValue>({
   updateTasks: () => {},
   deleteTasks: () => {},
   createTask: () => {},
+  KanbanTask:()=>{}
   // createAssignedTask:()=>{}
 });
 
@@ -41,35 +43,36 @@ interface TaskProviderProps {
 
 // Create context provider
 export const TaskProvider = ({ children }: TaskProviderProps) => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [assigned,setAssignedTask] = useState<Task[]>([]);
-  const [todoTask,setTodoTask] = useState<Task[]>([]);
-  const [inProgressTask,setInProgressTask] = useState<Task[]>([]);
+  const [assigned, setAssignedTask] = useState<Task[]>([]);
+  const [todoTask, setTodoTask] = useState<Task[]>([]);
+  const [inProgressTask, setInProgressTask] = useState<Task[]>([]);
   const [testingTask, setTestingTask] = useState<Task[]>([]);
   const [CompletedTask, setCompletedTask] = useState<Task[]>([]);
 
   // Fetch tasks on component mount
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await getAllTasks();
-        const formattedTasks = res.data.data.map((task: Task) => ({
-          ...task,
-          dueDate: moment(task.dueDate).calendar(),
-        }));
-        setTasks(formattedTasks);
-        console.log("context", res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchTasks();
-  }, []);
+    if (user) {
+      const fetchTasks = async () => {
+        try {
+          const res = await getAllTasks();
+          const formattedTasks = res.data.data.map((task: Task) => ({
+            ...task,
+            dueDate: moment(task.dueDate).calendar(),
+          }));
+          setTasks(formattedTasks);
+          console.log("context", res);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchTasks();
+    }
+  }, [user]);
 
   const updateTasks = (updatedTask: Task) => {
-    console.log('the recived task is:',updatedTask);
+    console.log("the recived task is:", updatedTask);
     updatedTask.dueDate = moment(updatedTask.dueDate).calendar();
     const updatedTasks = tasks.map((task) => {
       if (task._id === updatedTask._id) {
@@ -88,6 +91,10 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
     setTasks(newTasks);
   };
 
+  const KanbanTask = (newArragedTask:Task[])=>{
+    setTasks(newArragedTask);
+  }
+
   // const createAssignedTask = (newTasks:Task)=>{
   //   console.log(user?._id);
   //   if(newTasks.assignee?.some(assignee=>assignee._id === user?._id)){
@@ -96,71 +103,81 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   //   return;
   // }
 
-  useEffect(()=>{
-    const  fetchAssignedTasks=async()=>{
-      try {
-        const assignedTasks = await getAssignedTask();
-        setAssignedTask(assignedTasks?.data?.data)
-        console.log("Assigned task is", assignedTasks);
-      } catch (error) {
-        console.log(error);
-      }
+  useEffect(() => {
+    if (user) {
+      const fetchAssignedTasks = async () => {
+        try {
+          const assignedTasks = await getAssignedTask();
+          setAssignedTask(assignedTasks?.data?.data);
+          console.log("Assigned task is", assignedTasks);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchAssignedTasks();
     }
-    fetchAssignedTasks();
-  },[user])
+  }, [user]);
 
-
-  useEffect(()=>{
-    const  fetchAssignedTodo=async()=>{
-      try {
-        const assignedTodo = await getAssignedTodo("TODO");
-        setTodoTask(assignedTodo?.data?.data);
-        console.log("Assigned Todo task is", assignedTodo);
-      } catch (error) {
-        console.log(error);
-      }
+  useEffect(() => {
+    if (user) {
+      const fetchAssignedTodo = async () => {
+        try {
+          const assignedTodo = await getAssignedTodo("TODO");
+          setTodoTask(assignedTodo?.data?.data);
+          console.log("Assigned Todo task is", assignedTodo);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchAssignedTodo();
     }
-    fetchAssignedTodo();
-  },[user])
-  useEffect(()=>{
-    const  fetchAssignedInProgress=async()=>{
-      try {
-        const assignedInProgress = await getAssignedTodo("INPROGRESS");
-        setInProgressTask(assignedInProgress?.data?.data);
-        console.log("Assigned in progress task is", assignedInProgress);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchAssignedInProgress();
-  },[user])
+  }, [user]);
+  useEffect(() => {
+    if (user) {
+      const fetchAssignedInProgress = async () => {
+        try {
+          const assignedInProgress = await getAssignedTodo("INPROGRESS");
+          setInProgressTask(assignedInProgress?.data?.data);
+          console.log("Assigned in progress task is", assignedInProgress);
+        } catch (error) {
+          console.log(error);
+        }
+      };
 
-  useEffect(()=>{
-    const  fetchAssignedInProgress=async()=>{
-      try {
-        const assignedTesting = await getAssignedTodo("TESTING");
-        setTestingTask(assignedTesting?.data?.data);
-        console.log("Assigned in progress task is", assignedTesting);
-      } catch (error) {
-        console.log(error);
-      }
+      fetchAssignedInProgress();
     }
-    fetchAssignedInProgress();
-  },[user])
+  }, [user]);
 
-
-  useEffect(()=>{
-    const  fetchAssignedCompleted=async()=>{
-      try {
-        const assignedCompleted = await getAssignedTodo("COMPLETED");
-        setCompletedTask(assignedCompleted?.data?.data);
-        console.log("Assigned in progress task is", assignedCompleted);
-      } catch (error) {
-        console.log(error);
-      }
+  useEffect(() => {
+    if (user) {
+      const fetchAssignedInProgress = async () => {
+        try {
+          const assignedTesting = await getAssignedTodo("TESTING");
+          setTestingTask(assignedTesting?.data?.data);
+          console.log("Assigned in progress task is", assignedTesting);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchAssignedInProgress();
     }
-    fetchAssignedCompleted();
-  },[user])
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      const fetchAssignedCompleted = async () => {
+        try {
+          const assignedCompleted = await getAssignedTodo("COMPLETED");
+          setCompletedTask(assignedCompleted?.data?.data);
+          console.log("Assigned in progress task is", assignedCompleted);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchAssignedCompleted();
+    }
+  }, [user]);
 
   return (
     <TaskContext.Provider
@@ -174,6 +191,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         updateTasks,
         deleteTasks,
         createTask,
+        KanbanTask,
         // createAssignedTask,
       }}
     >

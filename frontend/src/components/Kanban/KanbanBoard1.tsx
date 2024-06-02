@@ -25,10 +25,10 @@ const KanbanBoard = () => {
   const { tasks, KanbanTask } = useTasks();
   const [activeTask, setActiveTask] = useState<TaskInterface | null>(null);
 
-  useEffect(() => {
-    console.log("acivetask", activeTask);
-    console.log("array of tasks", tasks);
-  }, [activeTask, tasks]);
+  useEffect(()=>{
+    console.log('acivetask',activeTask);
+    console.log('array of tasks',tasks);
+  },[activeTask])
 
   const [columns, setColumns] = useState([
     { status: "TODO", tasks: tasks.filter((task) => task.status === "TODO") },
@@ -99,12 +99,11 @@ const KanbanBoard = () => {
 
   const handleDragOver = (event: DragOverEvent) => {
     const { active, over } = event;
-    console.log("over event", event);
+    console.log('over event',event);
     if (!over) return;
 
     const isActiveTask = active.data.current?.type === "task";
     const isOverTask = over.data.current?.type === "task";
-    console.log("over ko", isActiveTask, isOverTask);
 
     if (isActiveTask && isOverTask) {
       const activeIndex = getTaskPos(active.id);
@@ -114,64 +113,48 @@ const KanbanBoard = () => {
         debouncedKanbanTask(updatedTasks);
       }
     }
+
+    
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    console.log("end event", event);
+    console.log('end event',event);
 
     if (!over) return;
-    const isOverColumnTask = over.data.current?.type === "column";
+
     const activeIndex = getTaskPos(active.id);
     const overIndex = getTaskPos(over.id);
-    console.log("end ko active ra over index", activeIndex, overIndex);
-    if (activeIndex !== overIndex && isOverColumnTask) {
-      console.log("1st one gayo");
-      const updatedTask = tasks.map((task) => {
-        if (task._id === activeTask?._id) {
-          if (
-            over.id.toString().split("-")?.shift() === "TODO" ||
-            over.id.toString().split("-")?.shift() === "INPROGRESS" ||
-            over.id.toString().split("-")?.shift() === "TESTING" ||
-            over.id.toString().split("-")?.shift() === "COMPLETED"
-          ) {
-            console.log(
-              "task bhitra gayo",
-              over.id.toString().split("-")?.shift()
-            );
-            const status = over?.id.toString().split("-")?.shift() ?? "";
-            task.status = status as
-              | "TODO"
-              | "INPROGRESS"
-              | "TESTING"
-              | "COMPLETED";
-          }
-        }
-        return task;
-      });
+
+    if (activeIndex !== overIndex) {
+      const updatedTasks = arrayMove(tasks, activeIndex, overIndex);
       setColumns([
         {
           status: "TODO",
-          tasks: updatedTask.filter((task) => task.status === "TODO"),
+          tasks: updatedTasks.filter((task) => task.status === "TODO"),
         },
         {
           status: "INPROGRESS",
-          tasks: updatedTask.filter((task) => task.status === "INPROGRESS"),
+          tasks: updatedTasks.filter((task) => task.status === "INPROGRESS"),
         },
         {
           status: "TESTING",
-          tasks: updatedTask.filter((task) => task.status === "TESTING"),
+          tasks: updatedTasks.filter((task) => task.status === "TESTING"),
         },
         {
           status: "COMPLETED",
-          tasks: updatedTask.filter((task) => task.status === "COMPLETED"),
+          tasks: updatedTasks.filter((task) => task.status === "COMPLETED"),
         },
       ]);
+      debouncedKanbanTask(updatedTasks);
     }
-    if (!activeTask) return;
 
-    if (isOverColumnTask) {
-      handleUpdateStatus(activeTask?._id, over?.id.toString().split('-')?.shift() ?? "");
+    const droppedColumn = columns.find((column) =>
+      column.tasks.some((task) => task._id === over.id)
+    );
+    if (!droppedColumn) return;
+    if (activeTask && droppedColumn.status !== activeTask.status) {
+      handleUpdateStatus(activeTask._id, droppedColumn.status);
     }
 
     setActiveTask(null);

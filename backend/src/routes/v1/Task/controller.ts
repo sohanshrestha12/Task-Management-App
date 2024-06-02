@@ -128,12 +128,32 @@ const TaskController = {
     try {
       const { type } = req.query;
       const id = res.locals.user._id;
-      if(!type) throw new CustomError("No type",404);
-      const assignedTask = await TaskService.getAssignedStatus(type.toString(),id);
+      if (!type) throw new CustomError("No type", 404);
+      const assignedTask = await TaskService.getAssignedStatus(
+        type.toString(),
+        id
+      );
       return successResponse({
         response: res,
         message: "Fetch assigned Todo successfully",
         data: assignedTask,
+        status: 200,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateStatus(req: Request<{id:string,status:string},unknown,unknown>, res: Response, next: NextFunction) {
+    try {
+      const { id,status } = req.params;
+      console.log(id,status);
+      if(!id) throw new CustomError("Invalid operation",400);
+      if(!status) throw new CustomError("Invalid operation",400);
+      const updateStatus = await TaskService.updateStatus(id?.toString(),status?.toString());
+      return successResponse({
+        response: res,
+        message: "Fetch assigned Todo successfully",
+        data: updateStatus,
         status: 200,
       });
     } catch (error) {

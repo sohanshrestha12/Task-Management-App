@@ -1,6 +1,6 @@
+import "./AxiosInterceptor";
 import CreateTask from "@/components/CreateTask";
 import { TaskUrl } from "@/config/Axios";
-import "./AxiosInterceptor";
 import { Task } from "@/components/GridView/columns";
 import { FormValues } from "@/components/UpdateTask";
 
@@ -29,4 +29,7 @@ export const getAssignedTask = ()=>{
 }
 export const getAssignedTodo = (type:string)=>{
   return TaskUrl.get(`/tasks/getAllTodos?type=${type}`);
+}
+export const getUpdatedTaskStatus = (id:string,status:string)=>{
+  return TaskUrl.post(`/tasks/updateStatus/${id}/${status}`);
 }

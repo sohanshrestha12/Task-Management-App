@@ -30,6 +30,7 @@ import { DatePickerDemo } from "./DatePicker";
 import { Task } from "./GridView/columns";
 import { MultiSelectAssignee, MultiSelectTags } from "./MultiSelect";
 import { Button } from "./ui/button";
+import { useAuth } from "./Auth/ProtectedRoutes";
 
 interface CreateTask {
   assignee: User[];
@@ -60,6 +61,7 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
   const [assignee, setAssignee] = useState([]);
   const sheetCloseRef = useRef<HTMLButtonElement>(null);
   const [tag, setTags] = useState([]);
+  const {user} = useAuth();
 
   const handleSubmit = async (values: CreateTask) => {
     try {
@@ -81,7 +83,8 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
     const fetchAllAssignee = async () => {
       try {
         const response = await getAllAssignee();
-        setAssignee(response.data.data);
+        const allAssignee = response.data.data.filter((data:User)=>data._id !== user?._id);
+        setAssignee(allAssignee);
 
         console.log("AllAssignee", response);
       } catch (error) {
@@ -109,7 +112,7 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
         <IoMdAddCircleOutline />
         <p className="text-[16px]">Create Task</p>
       </SheetTrigger>
-      <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
+      <SheetContent className="w-[400px] sm:w-[540px] bg-white overflow-y-auto">
         <SheetClose ref={sheetCloseRef} className="hidden">
           close
         </SheetClose>

@@ -3,8 +3,8 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "./Auth/ProtectedRoutes";
 import { toast } from "sonner";
+import { useAuth } from "./Auth/ProtectedRoutes";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,6 +31,8 @@ const Navbar = () => {
       console.log(error);
     }
   }
+
+
   return (
     <nav className="bg-white md:fixed md:w-full top-0 left-0 flex justify-between items-center py-8 px-12 z-10">
       <div>
@@ -46,6 +48,7 @@ const Navbar = () => {
             <Link to="/" className="hover:text-gray-100">
               Home
             </Link>
+
           </li>
           <li>
             <Link to="/" className="hover:text-gray-100">
