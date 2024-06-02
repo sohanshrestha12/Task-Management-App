@@ -22,7 +22,7 @@ const Column = ({ column }: ColumnProps) => {
 
 
   return (
-    <div className="col-span-1 h-fit bg-gray-200 p-2">
+    <div className="col-span-1 h-fit bg-gray-200 px-2">
       <h2 className="bg-white mb-3">{column.status}</h2>
       <div ref={setNodeRef} style={{backgroundColor}}>
         <SortableContext items={itemIds}>
@@ -51,6 +51,7 @@ const DroppableAbove = ({
     data: { type: "column", position: "above", index: taskIndex },
   });
   const backgroundColor = isOver ? "lightblue" : "transparent";
+  console.log(`DroppableAbove ${taskIndex}: isOver = ${isOver}`);
 
   return (
     <div ref={setNodeRef} style={{ backgroundColor }} className="py-1 gap-2">
@@ -69,9 +70,10 @@ const DroppableBelow = ({
     data: { type: "column", position: "below", index: taskIndex },
   });
   const backgroundColor = isOver ? "lightblue" : "transparent";
+  console.log(`DroppableBelow ${taskIndex}: isOver = ${isOver}`);
 
   return (
-    <div ref={setNodeRef} style={{ backgroundColor }} className="py-1 gap-2">
+    <div ref={setNodeRef} style={{ backgroundColor }} className="py-3 gap-2">
       
     </div>
   );
