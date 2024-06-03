@@ -140,7 +140,7 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent className="h-[80vh] overflow-y-scroll">
+      <DialogContent className="bg-white h-[80vh] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>
 

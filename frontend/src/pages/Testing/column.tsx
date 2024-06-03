@@ -17,13 +17,35 @@ import {
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 import { Task } from "@/components/GridView/columns";
+import { getUpdatedTaskStatus } from "@/api/Task";
+import { toast } from "sonner";
+import axios from "axios";
 
 const customSortPriority = (rowA: string, rowB: string) => {
   const order = ["LOW", "MEDIUM", "HIGH"];
   return order.indexOf(rowA) - order.indexOf(rowB);
 };
 
-export const columns: ColumnDef<Task>[] = [
+const moveToTodo = async (
+  id: string,
+  status: string,
+  updateTaskStatus: (task: Task) => void
+) => {
+  try {
+    const res = await getUpdatedTaskStatus(id, status);
+    if (res) toast.success(`Moved to ${status} successfully`);
+    updateTaskStatus(res.data.data);
+    console.log("grid view update status", res);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message);
+    } else {
+      console.log(error);
+    }
+  }
+};
+
+export const columns = (updateTaskStatus: (task: Task) => void): ColumnDef<Task>[] => [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -131,8 +153,34 @@ export const columns: ColumnDef<Task>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "TODO"}
+              onClick={() => moveToTodo(task._id, "TODO", updateTaskStatus)}
+            >
+              Move to Todo
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "INPROGRESS"}
+              onClick={() =>
+                moveToTodo(task._id, "INPROGRESS", updateTaskStatus)
+              }
+            >
+              Move to In Progress
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "TESTING"}
+              onClick={() => moveToTodo(task._id, "TESTING", updateTaskStatus)}
+            >
+              Move to Testing
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "COMPLETED"}
+              onClick={() =>
+                moveToTodo(task._id, "COMPLETED", updateTaskStatus)
+              }
+            >
+              Move to Completed
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

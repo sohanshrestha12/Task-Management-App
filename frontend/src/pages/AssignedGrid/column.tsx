@@ -147,13 +147,37 @@ export const columns=(updateTaskStatus:(task:Task) => void ) :ColumnDef<Task>[] 
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(task._id)}
             >
-              Copy payment ID
+              Copy task ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={()=>moveToTodo(task._id,"TODO",updateTaskStatus)}>Move to Todo</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>moveToTodo(task._id,"INPROGRESS",updateTaskStatus)}>Move to In Progress</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>moveToTodo(task._id,"TESTING",updateTaskStatus)}>Move to Testing</DropdownMenuItem>
-            <DropdownMenuItem onClick={()=>moveToTodo(task._id,"COMPLETED",updateTaskStatus)}>Move to Completed</DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "TODO"}
+              onClick={() => moveToTodo(task._id, "TODO", updateTaskStatus)}
+            >
+              Move to Todo
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "INPROGRESS"}
+              onClick={() =>
+                moveToTodo(task._id, "INPROGRESS", updateTaskStatus)
+              }
+            >
+              Move to In Progress
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "TESTING"}
+              onClick={() => moveToTodo(task._id, "TESTING", updateTaskStatus)}
+            >
+              Move to Testing
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              disabled={task.status === "COMPLETED"}
+              onClick={() =>
+                moveToTodo(task._id, "COMPLETED", updateTaskStatus)
+              }
+            >
+              Move to Completed
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

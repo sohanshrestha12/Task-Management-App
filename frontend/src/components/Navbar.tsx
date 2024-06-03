@@ -34,9 +34,9 @@ const Navbar = () => {
 
 
   return (
-    <nav className="bg-white md:fixed md:w-full top-0 left-0 flex justify-between items-center py-8 px-12 z-10">
+    <nav className="bg-white md:fixed md:w-full top-0 left-0 flex justify-between items-center py-7 px-10 z-10">
       <div>
-        <h1 className="font-bold">Task Management Application</h1>
+        <h1 className="font-bold text-green-500 text-2xl">Task Management Application</h1>
       </div>
       <div
         className={`md:static absolute md:min-h-fit bg-white min-h-[60vh] left-0 ${

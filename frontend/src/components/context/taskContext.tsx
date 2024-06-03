@@ -128,7 +128,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       const fetchAssignedTodo = async () => {
         try {
           const assignedTodo = await getAssignedTodo("TODO");
-          setTodoTask(assignedTodo?.data?.data);
+          const formattedTasks = assignedTodo.data.data.map((task: Task) => ({
+            ...task,
+            dueDate: moment(task.dueDate).calendar(),
+          }));
+          setTodoTask(formattedTasks);
           console.log("Assigned Todo task is", assignedTodo);
         } catch (error) {
           console.log(error);
@@ -142,7 +146,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       const fetchAssignedInProgress = async () => {
         try {
           const assignedInProgress = await getAssignedTodo("INPROGRESS");
-          setInProgressTask(assignedInProgress?.data?.data);
+          const formattedTasks = assignedInProgress.data.data.map((task: Task) => ({
+            ...task,
+            dueDate: moment(task.dueDate).calendar(),
+          }));
+          setInProgressTask(formattedTasks);
           console.log("Assigned in progress task is", assignedInProgress);
         } catch (error) {
           console.log(error);
@@ -158,7 +166,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       const fetchAssignedInProgress = async () => {
         try {
           const assignedTesting = await getAssignedTodo("TESTING");
-          setTestingTask(assignedTesting?.data?.data);
+          const formattedTasks = assignedTesting.data.data.map((task: Task) => ({
+            ...task,
+            dueDate: moment(task.dueDate).calendar(),
+          }));
+          setTestingTask(formattedTasks);
           console.log("Assigned in progress task is", assignedTesting);
         } catch (error) {
           console.log(error);
@@ -173,7 +185,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       const fetchAssignedCompleted = async () => {
         try {
           const assignedCompleted = await getAssignedTodo("COMPLETED");
-          setCompletedTask(assignedCompleted?.data?.data);
+          const formattedTasks = assignedCompleted.data.data.map((task: Task) => ({
+            ...task,
+            dueDate: moment(task.dueDate).calendar(),
+          }));
+          setCompletedTask(formattedTasks);
           console.log("Assigned in progress task is", assignedCompleted);
         } catch (error) {
           console.log(error);

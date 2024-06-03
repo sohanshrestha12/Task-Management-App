@@ -82,5 +82,5 @@ export const getAssignedTStatus = (type: string,id:string) => {
   return TaskModel.find({ assignee: id,status:type }).populate("assignee").populate("tags");
 };
 export const updateStatus = (id: string, status: string) => {
-  return TaskModel.findByIdAndUpdate({_id:id},{status:status},{new:true});
+  return TaskModel.findByIdAndUpdate({_id:id},{status:status},{new:true}).populate("assignee").populate("tags");
 };

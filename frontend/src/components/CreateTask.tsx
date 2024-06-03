@@ -61,7 +61,7 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
   const [assignee, setAssignee] = useState([]);
   const sheetCloseRef = useRef<HTMLButtonElement>(null);
   const [tag, setTags] = useState([]);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   const handleSubmit = async (values: CreateTask) => {
     try {
@@ -83,7 +83,9 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
     const fetchAllAssignee = async () => {
       try {
         const response = await getAllAssignee();
-        const allAssignee = response.data.data.filter((data:User)=>data._id !== user?._id);
+        const allAssignee = response.data.data.filter(
+          (data: User) => data._id !== user?._id
+        );
         setAssignee(allAssignee);
 
         console.log("AllAssignee", response);
@@ -108,9 +110,11 @@ const CreateTask = ({ setNewTask }: CreateTaskProps) => {
 
   return (
     <Sheet>
-      <SheetTrigger className="p-2 flex gap-2 flex-row-reverse justify-center items-center text-[20px] bg-green-500 text-white rounded-md">
-        <IoMdAddCircleOutline />
-        <p className="text-[16px]">Create Task</p>
+      <SheetTrigger className="p-2 text-[20px] bg-green-500 text-white rounded-md">
+        <div className="flex gap-2 mx-3 flex-row-reverse justify-center items-center">
+          <IoMdAddCircleOutline />
+          <p className="text-[16px]">Create Task</p>
+        </div>
       </SheetTrigger>
       <SheetContent className="w-[400px] sm:w-[540px] bg-white overflow-y-auto">
         <SheetClose ref={sheetCloseRef} className="hidden">
