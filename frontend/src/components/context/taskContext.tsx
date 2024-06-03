@@ -20,7 +20,8 @@ interface TaskContextValue {
   updateTasks: (newTasks: Task) => void;
   deleteTasks: (remainingTasks: Task[]) => void;
   createTask: (newTasks: Task[]) => void;
-  KanbanTask:(newTasks:Task[])=>void;
+  KanbanTask: (newTasks: Task[]) => void;
+  setKanbanTasks: (allUpdatedTask:Task[])=>void;
   // createAssignedTask:(newTasks:Task)=>void
 }
 const TaskContext = createContext<TaskContextValue>({
@@ -33,7 +34,8 @@ const TaskContext = createContext<TaskContextValue>({
   updateTasks: () => {},
   deleteTasks: () => {},
   createTask: () => {},
-  KanbanTask:()=>{}
+  KanbanTask:()=>{},
+  setKanbanTasks:()=>{}
   // createAssignedTask:()=>{}
 });
 
@@ -70,6 +72,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       fetchTasks();
     }
   }, [user]);
+
+  const setKanbanTasks = (allUpdatedTask:Task[]) =>{
+    console.log('updating original tasks');
+    setTasks(allUpdatedTask);
+  }
 
   const updateTasks = (updatedTask: Task) => {
     console.log("the recived task in updateTask context is:", updatedTask);
@@ -213,6 +220,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         deleteTasks,
         createTask,
         KanbanTask,
+        setKanbanTasks,
         // createAssignedTask,
       }}
     >

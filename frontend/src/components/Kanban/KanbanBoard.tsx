@@ -22,7 +22,7 @@ import Task from "./Task";
 import { getUpdatedTaskStatus } from "@/api/Task";
 
 const KanbanBoard = () => {
-  const { tasks, KanbanTask } = useTasks();
+  const { tasks, KanbanTask,setKanbanTasks } = useTasks();
   const [activeTask, setActiveTask] = useState<TaskInterface | null>(null);
 
   useEffect(() => {
@@ -149,6 +149,7 @@ const KanbanBoard = () => {
         }
         return task;
       });
+      setKanbanTasks(updatedTask);
       setColumns([
         {
           status: "TODO",

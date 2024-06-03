@@ -1,10 +1,42 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { NavLink } from "react-router-dom";
 import { useTasks } from "./context/taskContext";
+import { useAuth } from "./Auth/ProtectedRoutes";
 
 const SideBar = () => {
-  const { assigned, testingTask, todoTask, inProgressTask, CompletedTask } =
+  const { tasks,assigned } =
     useTasks();
+  const {user} = useAuth();
+   if (!user?._id) {
+     return <div>Loading...</div>; 
+   }
+const todoTask = tasks.filter(
+  (task) =>
+    task.status === "TODO" &&
+    task.assignee &&
+    task.assignee.some((taskAssignee) => taskAssignee._id === user._id)
+);
 
+const inProgressTask = tasks.filter(
+  (task) =>
+    task.status === "INPROGRESS" &&
+    task.assignee &&
+    task.assignee.some((taskAssignee) => taskAssignee._id === user._id)
+);
+
+const testingTask = tasks.filter(
+  (task) =>
+    task.status === "TESTING" &&
+    task.assignee &&
+    task.assignee.some((taskAssignee) => taskAssignee._id === user._id)
+);
+
+const completedTask = tasks.filter(
+  (task) =>
+    task.status === "COMPLETED" &&
+    task.assignee &&
+    task.assignee.some((taskAssignee) => taskAssignee._id === user._id)
+);
   return (
     <div className="w-[220px] rounded h-[98vh] col-span-1 fixed top-[95px] left-0 px-4 py-5 bg-white">
       <h1 className="py-2 p-6 font-bold text-xl text-green-500 mb-5">
@@ -61,7 +93,7 @@ const SideBar = () => {
             to="/completed"
           >
             Completed
-          <p>{CompletedTask.length}</p>
+          <p>{completedTask.length}</p>
           </NavLink>
         </li>
       </ul>
