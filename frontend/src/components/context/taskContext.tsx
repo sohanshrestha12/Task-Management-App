@@ -72,7 +72,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   }, [user]);
 
   const updateTasks = (updatedTask: Task) => {
-    console.log("the recived task is:", updatedTask);
+    console.log("the recived task in updateTask context is:", updatedTask);
     updatedTask.dueDate = moment(updatedTask.dueDate).calendar();
     const updatedTasks = tasks.map((task) => {
       if (task._id === updatedTask._id) {
@@ -80,6 +80,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       }
       return task;
     });
+    console.log("updatedTask is:",updatedTasks)
     setTasks(updatedTasks);
   };
 
@@ -108,7 +109,11 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       const fetchAssignedTasks = async () => {
         try {
           const assignedTasks = await getAssignedTask();
-          setAssignedTask(assignedTasks?.data?.data);
+          const formattedTasks = assignedTasks.data.data.map((task: Task) => ({
+            ...task,
+            dueDate: moment(task.dueDate).calendar(),
+          }));
+          setAssignedTask(formattedTasks);
           console.log("Assigned task is", assignedTasks);
         } catch (error) {
           console.log(error);
@@ -116,7 +121,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       };
       fetchAssignedTasks();
     }
-  }, [user]);
+  }, [user,tasks]);
 
   useEffect(() => {
     if (user) {
@@ -131,7 +136,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       };
       fetchAssignedTodo();
     }
-  }, [user]);
+  }, [user,tasks]);
   useEffect(() => {
     if (user) {
       const fetchAssignedInProgress = async () => {
@@ -146,7 +151,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
 
       fetchAssignedInProgress();
     }
-  }, [user]);
+  }, [user,tasks]);
 
   useEffect(() => {
     if (user) {
@@ -161,7 +166,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       };
       fetchAssignedInProgress();
     }
-  }, [user]);
+  }, [user,tasks]);
 
   useEffect(() => {
     if (user) {
@@ -177,7 +182,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
 
       fetchAssignedCompleted();
     }
-  }, [user]);
+  }, [user,tasks]);
 
   return (
     <TaskContext.Provider

@@ -149,10 +149,15 @@ const TaskController = {
       console.log(id,status);
       if(!id) throw new CustomError("Invalid operation",400);
       if(!status) throw new CustomError("Invalid operation",400);
+      if(status == 'COMPLETED'){
+        const task = await TaskService.getTaskById(id);
+        if(!task) throw new CustomError("Invalid operation",400);
+        if(task.status !== "TESTING") throw new CustomError("Cannot directly move to Completed.",400);
+      }
       const updateStatus = await TaskService.updateStatus(id?.toString(),status?.toString());
       return successResponse({
         response: res,
-        message: "Fetch assigned Todo successfully",
+        message: "Task status updated successfully",
         data: updateStatus,
         status: 200,
       });
