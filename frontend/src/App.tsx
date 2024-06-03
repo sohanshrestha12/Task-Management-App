@@ -12,6 +12,7 @@ import Todo from "./pages/Todo";
 import InProgress from "./pages/Inprogress";
 import Testing from "./pages/Testing";
 import Completed from "./pages/Completed";
+import CreatedTasks from "./pages/CreatedTask";
 const App = () => {
   console.log("hello world from app");
   return (
@@ -32,6 +33,7 @@ const App = () => {
             <Route path="inProgress" element={<InProgress />}></Route>
             <Route path="testing" element={<Testing />}></Route>
             <Route path="completed" element={<Completed />}></Route>
+            <Route path="createdTasks" element={<CreatedTasks />}></Route>
           </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

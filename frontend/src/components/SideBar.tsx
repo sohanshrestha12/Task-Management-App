@@ -4,7 +4,7 @@ import { useTasks } from "./context/taskContext";
 import { useAuth } from "./Auth/ProtectedRoutes";
 
 const SideBar = () => {
-  const { tasks,assigned } =
+  const { tasks,assigned,assigner } =
     useTasks();
   const {user} = useAuth();
    if (!user?._id) {
@@ -94,6 +94,15 @@ const completedTask = tasks.filter(
           >
             Completed
           <p>{completedTask.length}</p>
+          </NavLink>
+        </li>
+        <li className="w-full flex">
+          <NavLink
+            className="flex px-6 justify-between w-full py-2 rounded-full text-gray-500 font-semibold hover:text-black hover:bg-gray-300"
+            to="/createdTasks"
+          >
+            Created Tasks
+          <p>{assigner.length}</p>
           </NavLink>
         </li>
       </ul>

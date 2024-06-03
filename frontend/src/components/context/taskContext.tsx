@@ -1,4 +1,4 @@
-import { getAllTasks, getAssignedTask, getAssignedTodo } from "@/api/Task";
+import { getAllTasks, getAssignedTask, getAssignedTodo, getAssignerTasks } from "@/api/Task";
 import moment from "moment";
 import {
   ReactNode,
@@ -17,6 +17,7 @@ interface TaskContextValue {
   testingTask: Task[];
   inProgressTask: Task[];
   CompletedTask: Task[];
+  assigner:Task[];
   updateTasks: (newTasks: Task) => void;
   deleteTasks: (remainingTasks: Task[]) => void;
   createTask: (newTasks: Task[]) => void;
@@ -31,6 +32,7 @@ const TaskContext = createContext<TaskContextValue>({
   inProgressTask: [],
   testingTask: [],
   CompletedTask: [],
+  assigner:[],
   updateTasks: () => {},
   deleteTasks: () => {},
   createTask: () => {},
@@ -48,6 +50,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [assigned, setAssignedTask] = useState<Task[]>([]);
+  const [assigner, setAssignerTask] = useState<Task[]>([]);
   const [todoTask, setTodoTask] = useState<Task[]>([]);
   const [inProgressTask, setInProgressTask] = useState<Task[]>([]);
   const [testingTask, setTestingTask] = useState<Task[]>([]);
@@ -110,6 +113,20 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   //   }
   //   return;
   // }
+  useEffect(()=>{
+    if(user){
+      const fetchCreatedTasks = async() => {
+        const createdTasks = await getAssignerTasks(user._id);
+        const formattedTasks = createdTasks.data.data.map((task: Task) => ({
+          ...task,
+          dueDate: moment(task.dueDate).calendar(),
+        }));
+        setAssignerTask(formattedTasks)
+      }
+      fetchCreatedTasks();
+    }
+  
+  },[user,tasks]);
 
   useEffect(() => {
     if (user) {
@@ -213,6 +230,7 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
         assigned,
         tasks,
         todoTask,
+        assigner,
         inProgressTask,
         testingTask,
         CompletedTask,

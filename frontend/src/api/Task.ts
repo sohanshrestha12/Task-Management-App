@@ -33,3 +33,7 @@ export const getAssignedTodo = (type:string)=>{
 export const getUpdatedTaskStatus = (id:string,status:string)=>{
   return TaskUrl.post(`/tasks/updateStatus/${id}/${status}`);
 }
+
+export const getAssignerTasks = (id:string)=>{
+  return TaskUrl.get(`/tasks/getAssignerTasks/${id}`);
+}

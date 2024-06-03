@@ -165,5 +165,21 @@ const TaskController = {
       next(error);
     }
   },
+  async getAssignerTasks(req:Request<{id:string},unknown,unknown>,res:Response,next:NextFunction){
+    try {
+      const {id} = req.params;
+      if(!id) throw new CustomError('Invalid operation',400);
+      const getAssignerTask = await TaskService.getAssignerTasks(id);
+      if(!getAssignerTask) throw new CustomError('task does not exist',404);
+      return successResponse({
+        response: res,
+        message: "Assigner's tasks retrieved successfully",
+        data: getAssignerTask,
+        status: 200,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 export default TaskController;
