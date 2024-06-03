@@ -72,7 +72,7 @@ const KanbanBoard = () => {
       toast.success(`Moved to ${status} successfully`);
     } catch (error) {
       console.log(error);
-      toast.error(`Cannot directly move to Completed from ${status}`);
+      toast.error(`Cannot directly move to Completed from ${activeTask?.status}`);
     }
   };
 
@@ -88,7 +88,12 @@ const KanbanBoard = () => {
     useSensor(TouchSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
+    useSensor(PointerSensor,{
+      activationConstraint:{
+        distance:5
+      }
+    }),
   );
 
   const getTaskPos = (id: UniqueIdentifier) =>
@@ -200,7 +205,7 @@ const KanbanBoard = () => {
 
   return (
     <div>
-      <h1>Kanban view</h1>
+      <h1 className="my-5">Kanban view</h1>
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}

@@ -61,7 +61,7 @@ const DroppableAbove = ({
     <div
       ref={setNodeRef}
       style={{ backgroundColor }}
-      className="py-1 gap-2"
+      className="py-3 gap-2"
     ></div>
   );
 };
