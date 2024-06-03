@@ -9,22 +9,26 @@ interface ColumnProps {
 }
 interface DroppableParameterType {
   taskIndex: number;
-  columnStatus:string;
+  columnStatus: string;
 }
 
 const Column = ({ column }: ColumnProps) => {
   const itemIds = column.tasks.map((task) => task._id);
-   const { isOver, setNodeRef } = useDroppable({
-     id: `${column.status}-col`,
-     data: { type: "column"},
-   });
+  const { isOver, setNodeRef } = useDroppable({
+    id: `${column.status}-col`,
+    data: { type: "column" },
+  });
   const backgroundColor = isOver ? "lightblue" : "transparent";
 
-
   return (
-    <div className="col-span-1 h-fit bg-gray-200 px-2">
-      <h2 className="bg-white mb-3">{column.status}</h2>
-      <div ref={setNodeRef} style={{backgroundColor}}>
+    <div className="col-span-1 h-fit bg-gray-200 px-1">
+      <div className="flex justify-between items-center bg-white mb-3 px-2 py-3">
+        <h2 className="font-medium text-center">
+          {column.status}
+        </h2>
+        <p className="font-semibold">{column.tasks.length}</p>
+      </div>
+      <div ref={setNodeRef} style={{ backgroundColor }}>
         <SortableContext items={itemIds}>
           {column.tasks.map((item, index) => (
             <React.Fragment key={item._id}>
@@ -51,12 +55,14 @@ const DroppableAbove = ({
     data: { type: "column", position: "above", index: taskIndex },
   });
   const backgroundColor = isOver ? "lightblue" : "transparent";
-  console.log(`DroppableAbove ${taskIndex}: isOver = ${isOver}`);
+  // console.log(`DroppableAbove ${taskIndex}: isOver = ${isOver}`);
 
   return (
-    <div ref={setNodeRef} style={{ backgroundColor }} className="py-1 gap-2">
-      
-    </div>
+    <div
+      ref={setNodeRef}
+      style={{ backgroundColor }}
+      className="py-1 gap-2"
+    ></div>
   );
 };
 
@@ -70,12 +76,14 @@ const DroppableBelow = ({
     data: { type: "column", position: "below", index: taskIndex },
   });
   const backgroundColor = isOver ? "lightblue" : "transparent";
-  console.log(`DroppableBelow ${taskIndex}: isOver = ${isOver}`);
+  // console.log(`DroppableBelow ${taskIndex}: isOver = ${isOver}`);
 
   return (
-    <div ref={setNodeRef} style={{ backgroundColor }} className="py-3 gap-2">
-      
-    </div>
+    <div
+      ref={setNodeRef}
+      style={{ backgroundColor }}
+      className="py-3 gap-2"
+    ></div>
   );
 };
 

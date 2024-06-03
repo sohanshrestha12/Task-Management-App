@@ -67,7 +67,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             dueDate: moment(task.dueDate).calendar(),
           }));
           setTasks(formattedTasks);
-          console.log("context", res);
         } catch (error) {
           console.log(error);
         }
@@ -75,14 +74,15 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       fetchTasks();
     }
   }, [user]);
+  useEffect(()=>{
+    console.log('alltasks are:',tasks);
+  },[tasks]);
 
   const setKanbanTasks = (allUpdatedTask:Task[]) =>{
-    console.log('updating original tasks');
     setTasks(allUpdatedTask);
   }
 
   const updateTasks = (updatedTask: Task) => {
-    console.log("the recived task in updateTask context is:", updatedTask);
     updatedTask.dueDate = moment(updatedTask.dueDate).calendar();
     const updatedTasks = tasks.map((task) => {
       if (task._id === updatedTask._id) {
@@ -90,7 +90,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
       }
       return task;
     });
-    console.log("updatedTask is:",updatedTasks)
     setTasks(updatedTasks);
   };
 
@@ -138,7 +137,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             dueDate: moment(task.dueDate).calendar(),
           }));
           setAssignedTask(formattedTasks);
-          console.log("Assigned task is", assignedTasks);
         } catch (error) {
           console.log(error);
         }
@@ -157,7 +155,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             dueDate: moment(task.dueDate).calendar(),
           }));
           setTodoTask(formattedTasks);
-          console.log("Assigned Todo task is", assignedTodo);
         } catch (error) {
           console.log(error);
         }
@@ -175,7 +172,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             dueDate: moment(task.dueDate).calendar(),
           }));
           setInProgressTask(formattedTasks);
-          console.log("Assigned in progress task is", assignedInProgress);
         } catch (error) {
           console.log(error);
         }
@@ -195,7 +191,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             dueDate: moment(task.dueDate).calendar(),
           }));
           setTestingTask(formattedTasks);
-          console.log("Assigned in progress task is", assignedTesting);
         } catch (error) {
           console.log(error);
         }
@@ -214,7 +209,6 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
             dueDate: moment(task.dueDate).calendar(),
           }));
           setCompletedTask(formattedTasks);
-          console.log("Assigned in progress task is", assignedCompleted);
         } catch (error) {
           console.log(error);
         }

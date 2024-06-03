@@ -28,7 +28,7 @@ const KanbanBoard = () => {
   useEffect(()=>{
     console.log('acivetask',activeTask);
     console.log('array of tasks',tasks);
-  },[activeTask])
+  },[activeTask,tasks])
 
   const [columns, setColumns] = useState([
     { status: "TODO", tasks: tasks.filter((task) => task.status === "TODO") },

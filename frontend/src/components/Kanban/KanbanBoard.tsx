@@ -20,9 +20,10 @@ import { useTasks } from "../context/taskContext";
 import Column from "./Column";
 import Task from "./Task";
 import { getUpdatedTaskStatus } from "@/api/Task";
+import { toast } from "sonner";
 
 const KanbanBoard = () => {
-  const { tasks, KanbanTask,setKanbanTasks } = useTasks();
+  const { tasks, KanbanTask } = useTasks();
   const [activeTask, setActiveTask] = useState<TaskInterface | null>(null);
 
   useEffect(() => {
@@ -68,8 +69,10 @@ const KanbanBoard = () => {
     try {
       const response = await getUpdatedTaskStatus(activeId, status);
       console.log("swappedColumn", response);
+      toast.success(`Moved to ${status} successfully`);
     } catch (error) {
       console.log(error);
+      toast.error(`Cannot directly move to Completed from ${status}`);
     }
   };
 
@@ -118,10 +121,33 @@ const KanbanBoard = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    console.log("end event", event);
-
+    // console.log("end event",'active', active,'over',over);
     if (!over) return;
+    if (!activeTask) return;
+
     const isOverColumnTask = over.data.current?.type === "column";
+
+    if (isOverColumnTask) {
+      handleUpdateStatus(
+        activeTask?._id,
+        over?.id.toString().split("-")?.shift() ?? ""
+      );
+    }
+
+    if (
+      activeTask?.status !== "TESTING" &&
+      over?.id.toString().split("-")?.shift() === "COMPLETED"
+    ) {
+      console.log("gone here");
+      return;
+    }
+    // console.log(
+    //   "activeTask?.status ",
+    //   activeTask?.status,
+    //   'over?.id.toString().split("-")?.shift() ',
+    //   over?.id.toString().split("-")?.shift()
+    // );
+
     const activeIndex = getTaskPos(active.id);
     const overIndex = getTaskPos(over.id);
     console.log("end ko active ra over index", activeIndex, overIndex);
@@ -149,7 +175,6 @@ const KanbanBoard = () => {
         }
         return task;
       });
-      setKanbanTasks(updatedTask);
       setColumns([
         {
           status: "TODO",
@@ -168,11 +193,6 @@ const KanbanBoard = () => {
           tasks: updatedTask.filter((task) => task.status === "COMPLETED"),
         },
       ]);
-    }
-    if (!activeTask) return;
-
-    if (isOverColumnTask) {
-      handleUpdateStatus(activeTask?._id, over?.id.toString().split('-')?.shift() ?? "");
     }
 
     setActiveTask(null);

@@ -10,7 +10,7 @@ import ActionCell from "./ActionCell";
 
 export interface Task {
   assignee?: [{_id?:string; username: string }];
-  assigner: string;
+  assigner: {_id:string,username:string};
   comments?: [];
   createdAt?: string;
   description: string;

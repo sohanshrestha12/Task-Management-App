@@ -1,6 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { Task as TaskInterface } from "../GridView/columns";
 import { CSS } from "@dnd-kit/utilities";
+import DefaultUser from "../DefaultUser";
 
 interface TaskProps {
   task: TaskInterface;
@@ -36,16 +37,20 @@ const Task = ({ task }: TaskProps) => {
       style={style}
       {...attributes}
       {...listeners}
-      className={`h-[100px] hover:border-green-400 border-2 bg-white rounded-xl ${
+      className={`min-h-[100px] hover:border-green-400 py-3 ps-3 pe-10 break-words border-2 bg-white rounded-sm ${
         isDragging ? "opacity-50" : ""
       }`}
     >
-      {task.title} <br /> {task.status}
+      <h3 className="font-medium leading-tight mb-5">{task.title}</h3>
+      <div className="flex items-center gap-5">
+        <p>{task.status}</p>
+        <div className="rounded-full border-none h-[30px] w-[30px] flex items-center gap-3">
+          <DefaultUser/>
+          {task.assigner.username}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Task;
-
-
-

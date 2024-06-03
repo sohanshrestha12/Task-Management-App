@@ -39,6 +39,7 @@ const Page = () => {
   // }, []);
 
   const setNewTask = (newTask:Task) =>{
+    console.log('new task from create Task',newTask);
     const formattedDueDate = moment(newTask.dueDate).calendar();
     const formattedNewTask:Task = {...newTask,dueDate:formattedDueDate};
     createTask([formattedNewTask,...tasks]);

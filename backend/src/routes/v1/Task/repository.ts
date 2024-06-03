@@ -6,6 +6,7 @@ export const createTask = async (data: Task, userId: string): Promise<Task> => {
   const newTask = await task.save();
   await newTask.populate("tags");
   await newTask.populate("assignee");
+  await newTask.populate("assigner");
   return newTask;
 };
 export const getTaskById = (id: string): Promise<Task | null> => {
@@ -53,7 +54,10 @@ export const removeTagFromTask = (id: string, taskID: string) => {
 };
 
 export const getAllTask = (): Promise<Task[]> => {
-  return TaskModel.find().populate("assignee").populate("tags");
+  return TaskModel.find()
+    .populate("assignee")
+    .populate("assigner")
+    .populate("tags");
 };
 
 export const deleteTask = (
