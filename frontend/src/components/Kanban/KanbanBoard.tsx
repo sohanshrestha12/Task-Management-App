@@ -21,6 +21,7 @@ import Column from "./Column";
 import Task from "./Task";
 import { getUpdatedTaskStatus } from "@/api/Task";
 import { toast } from "sonner";
+import { checkValidity } from "./Rule";
 
 const KanbanBoard = () => {
   const { tasks, KanbanTask } = useTasks();
@@ -100,7 +101,10 @@ const KanbanBoard = () => {
     tasks.findIndex((task) => task._id === id);
 
   const handleDragStart = (event: DragStartEvent) => {
-    if (event.active.data.current?.type === "task") {
+    if (
+      event.active.data.current?.type === "task" ||
+      event.active.data.current?.type === "column"
+    ) {
       setActiveTask(event.active.data.current.task);
     }
   };
@@ -133,6 +137,9 @@ const KanbanBoard = () => {
     const isOverColumnTask = over.data.current?.type === "column";
 
     if (isOverColumnTask) {
+      console.log('activeTask',activeTask.status,'over Task',over.id.toString().split("-").shift());
+      const res = checkValidity(activeTask.status, over.id.toString().split("-").shift()!);
+      console.log(res);
       handleUpdateStatus(
         activeTask?._id,
         over?.id.toString().split("-")?.shift() ?? ""

@@ -140,7 +140,7 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
-      <DialogContent className="bg-white h-[80vh] overflow-y-scroll">
+      <DialogContent className="bg-white pb-0 h-[80vh] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>
 
@@ -330,7 +330,7 @@ const UpdateTask: React.FC<ViewTaskDetailsProps> = ({
                         <ErrorMessage name="dueDate" />
                       </div>
                     </div>
-                    <div className="flex justify-end mt-4 gap-4">
+                    <div className="flex justify-end sticky bottom-0 py-4 bg-white mt-4 gap-4">
                       <Button
                         type="submit"
                         disabled={isSubmitting}

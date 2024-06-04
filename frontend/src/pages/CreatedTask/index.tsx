@@ -5,28 +5,45 @@ import { useState } from "react";
 import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import UpdateTask from "@/components/UpdateTask";
 import { Task } from "@/components/GridView/columns";
+import { PaginationState } from "@tanstack/react-table";
 
 const CreatedTasks = () => {
-  const {assigner,updateTasks} = useTasks();
+  const { assigner, updateTasks } = useTasks();
   const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const {user} = useAuth();
+  const { user } = useAuth();
+    const [pagination, setPagination] = useState<PaginationState>({
+      pageIndex: 0,
+      pageSize: 10,
+    });
+  
 
-   const handleUpdateDialogOpen = (task:Task) => {setActiveTask(task);setUpdateDialogOpen(true)};
-   const handleUpdateDialogClose = () => setUpdateDialogOpen(false);
-   console.log('user',user);
-  console.log('created tasks',assigner);
+  const handleUpdateDialogOpen = (task: Task) => {
+    setActiveTask(task);
+    setUpdateDialogOpen(true);
+  };
+  const handleUpdateDialogClose = () => {
+    setActiveTask(null), setUpdateDialogOpen(false);
+  };
+  console.log("created tasks", assigner);
   return (
     <div className="px-12 mt-[95px] py-14 ml-1 w-[82vw] col-span-12 col-start-3 rounded border border-white overflow-x-hidden bg-white">
       <h1 className="mb-5">Assigned Tasks</h1>
-      <DataTable columns={columns(updateTasks,handleUpdateDialogOpen,user!)} data={assigner} />
-      {activeTask && <UpdateTask
-           isOpen={isUpdateDialogOpen}
-           onClose={handleUpdateDialogClose}
-           task={activeTask}
-         />}
+      <DataTable
+      pagination={pagination}
+      setPagination={setPagination}
+        columns={columns(updateTasks, handleUpdateDialogOpen, user!)}
+        data={assigner}
+      />
+      {activeTask && (
+        <UpdateTask
+          isOpen={isUpdateDialogOpen}
+          onClose={handleUpdateDialogClose}
+          task={activeTask}
+        />
+      )}
     </div>
   );
-}
+};
 
-export default CreatedTasks
+export default CreatedTasks;

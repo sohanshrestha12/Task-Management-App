@@ -55,7 +55,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
 
   }
   useEffect(() => {
-    fetchAssigner(task.assigner);
+    fetchAssigner(task.assigner._id);
     if(task.assignee){
         task.assignee.forEach((assignee) => {
             if(assignee._id){
@@ -79,7 +79,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-4">
               <label className="text-black">Title</label>
               <Input
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 type="text"
                 disabled
                 value={task.title}
@@ -88,7 +88,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-3">
               <label className="text-black">Description</label>
               <Textarea
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 disabled
               >
                 {task.description}
@@ -97,7 +97,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-3">
               <label className="text-black">Assigner</label>
               <Input
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 type="text"
                 disabled
                 value={assigner?.username}
@@ -106,7 +106,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-3">
               <label className="text-black">Assignee</label>
               <Input
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 type="text"
                 disabled
                 value={[
@@ -117,7 +117,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-3">
               <label className="text-black">Priority</label>
               <Input
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 type="text"
                 disabled
                 value={task.priority}
@@ -126,7 +126,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-3">
               <label className="text-black">Status</label>
               <Input
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 type="text"
                 disabled
                 value={task.status}
@@ -135,7 +135,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
             <div className="mt-3">
               <label className="text-black">Due Date</label>
               <Input
-                className="border-2 border-gray-700 text-black"
+                className="border-2 border-black text-black"
                 type="text"
                 disabled
                 value={task.dueDate}

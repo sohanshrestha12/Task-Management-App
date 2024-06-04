@@ -57,8 +57,8 @@ export function DataTable<TData extends Task, TValue>({
   const [rowSelection, setRowSelection] = React.useState<
     Record<number, boolean>
   >({});
-  const [pageSize,setPageSize] =React.useState(5);
-  const [pageIndex,setPageIndex] =React.useState(0);
+  const [pageSize, setPageSize] = React.useState(5);
+  const [pageIndex, setPageIndex] = React.useState(0);
   const table = useReactTable({
     data,
     columns,
@@ -73,26 +73,26 @@ export function DataTable<TData extends Task, TValue>({
       sorting,
       columnFilters,
       rowSelection,
-      pagination:{
+      pagination: {
         pageIndex,
         pageSize,
-      }
+      },
     },
   });
 
-     React.useEffect(() => {
-       console.log("Page Index:", table.getState().pagination.pageIndex);
-       console.log("Page Size:", table.getState().pagination.pageSize);
-       console.log("Can Next Page:", table.getCanNextPage());
-       console.log("Can Previous Page:", table.getCanPreviousPage());
-       console.log("Rows Length:", table.getRowModel().rows.length);
-     }, [
-       table.getState().pagination.pageIndex,
-       table.getState().pagination.pageSize,
-       table.getCanNextPage(),
-       table.getCanPreviousPage(),
-       table.getRowModel().rows.length,
-     ]);
+  //  React.useEffect(() => {
+  //    console.log("Page Index:", table.getState().pagination.pageIndex);
+  //    console.log("Page Size:", table.getState().pagination.pageSize);
+  //    console.log("Can Next Page:", table.getCanNextPage());
+  //    console.log("Can Previous Page:", table.getCanPreviousPage());
+  //    console.log("Rows Length:", table.getRowModel().rows.length);
+  //  }, [
+  //    table.getState().pagination.pageIndex,
+  //    table.getState().pagination.pageSize,
+  //    table.getCanNextPage(),
+  //    table.getCanPreviousPage(),
+  //    table.getRowModel().rows.length,
+  //  ]);
   // console.log(rowSelection);
   // get the selected row data
 
@@ -107,42 +107,50 @@ export function DataTable<TData extends Task, TValue>({
       console.log(response);
       onDelete(selectedRowsData);
       setRowSelection({});
-      toast.success('rows deleted successfully');
+      toast.success("rows deleted successfully");
     } catch (error) {
       console.log(error);
     }
   };
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     console.log(fieldToFilter);
-  },[fieldToFilter]);
+  }, [fieldToFilter]);
 
   React.useEffect(() => {
     console.log(selectedRowsData);
   }, [selectedRowsData]);
   return (
     <div>
-      <div className="flex items-center gap-4 py-4">
-        <Input
-          placeholder={`Filter ${fieldToFilter}...`}
-          value={
-            (table.getColumn(fieldToFilter)?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn(fieldToFilter)?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <Select onValueChange={(value) => setFieldToFilter(value)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Title" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="title">Title</SelectItem>
-            <SelectItem value="assignee">Assignee</SelectItem>
-            <SelectItem value="tags">Tags</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex justify-between items-center gap-4 py-4">
+        <div className="flex gap-4 basis-2/3">
+          <Input
+            placeholder={`Filter ${fieldToFilter}...`}
+            value={
+              (table.getColumn(fieldToFilter)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(fieldToFilter)?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+          <Select onValueChange={(value) => setFieldToFilter(value)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Title" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="title">Title</SelectItem>
+              <SelectItem value="assignee">Assignee</SelectItem>
+              <SelectItem value="tags">Tags</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div
+          onClick={handledelete}
+          className={`px-4 ${selectedRowsData.length <= 0?"hidden":""} rounded-xl py-2 bg-red-600 cursor-pointer hover:bg-red-500 transition-all`}
+        >
+          <FaTrash className="text-white hover:text-gray-300" />
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -225,12 +233,6 @@ export function DataTable<TData extends Task, TValue>({
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div
-          onClick={handledelete}
-          className="px-4 rounded-xl py-2 bg-red-600 cursor-pointer hover:bg-red-500 transition-all"
-        >
-          <FaTrash className="text-white hover:text-gray-300" />
         </div>
       </div>
     </div>
