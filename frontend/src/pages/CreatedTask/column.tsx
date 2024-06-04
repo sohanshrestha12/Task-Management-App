@@ -15,10 +15,11 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
+import { User } from "@/Types/Auth";
 import { getUpdatedTaskStatus } from "@/api/Task";
 import { Task } from "@/components/GridView/columns";
-import { toast } from "sonner";
 import axios from "axios";
+import { toast } from "sonner";
 
 
 const customSortPriority = (rowA: string, rowB: string) => {
@@ -41,8 +42,11 @@ const moveToTodo = async (id: string,status:string,updateTaskStatus:(task:Task)=
     }
   }
 };
-export const columns=(updateTaskStatus:(task:Task) => void ) :ColumnDef<Task>[] =>[
-
+export const columns = (
+  updateTaskStatus: (task: Task) => void,
+  handleUpdateDialogOpen:(task:Task)=>void,
+  user:User
+): ColumnDef<Task>[] => [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -135,52 +139,64 @@ export const columns=(updateTaskStatus:(task:Task) => void ) :ColumnDef<Task>[] 
       const task = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(task._id)}
-            >
-              Copy task ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              disabled={task.status === "TODO"}
-              onClick={() => moveToTodo(task._id, "TODO", updateTaskStatus)}
-            >
-              Move to Todo
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              disabled={task.status === "INPROGRESS"}
-              onClick={() =>
-                moveToTodo(task._id, "INPROGRESS", updateTaskStatus)
-              }
-            >
-              Move to In Progress
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              disabled={task.status === "TESTING"}
-              onClick={() => moveToTodo(task._id, "TESTING", updateTaskStatus)}
-            >
-              Move to Testing
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              disabled={task.status === "COMPLETED"}
-              onClick={() =>
-                moveToTodo(task._id, "COMPLETED", updateTaskStatus)
-              }
-            >
-              Move to Completed
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(task._id)}
+              >
+                Copy task ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={()=>handleUpdateDialogOpen(task)}
+                disabled={user?._id !== task.assigner._id}
+              >
+                Update
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={task.status === "TODO"}
+                onClick={() => moveToTodo(task._id, "TODO", updateTaskStatus)}
+              >
+                Move to Todo
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={task.status === "INPROGRESS"}
+                onClick={() =>
+                  moveToTodo(task._id, "INPROGRESS", updateTaskStatus)
+                }
+              >
+                Move to In Progress
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={task.status === "TESTING"}
+                onClick={() =>
+                  moveToTodo(task._id, "TESTING", updateTaskStatus)
+                }
+              >
+                Move to Testing
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={task.status === "COMPLETED"}
+                onClick={() =>
+                  moveToTodo(task._id, "COMPLETED", updateTaskStatus)
+                }
+              >
+                Move to Completed
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+       
+        </>
       );
     },
   },
 ];
+

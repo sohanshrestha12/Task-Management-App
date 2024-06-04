@@ -76,18 +76,31 @@ export const BulkDelete=(data:Task[]) => {
 }
 
 export const updateTask = (data:Task,id:string)=>{
-  return TaskModel.findByIdAndUpdate(id,data,{new:true}).populate("assignee").populate("tags");
+  return TaskModel.findByIdAndUpdate(id,data,{new:true}).populate("assignee").populate('assigner').populate("tags");
 }
 
 export const getAssignedTasks = (id:string)=>{
-  return TaskModel.find({assignee:id}).populate('assignee').populate('tags');
+  return TaskModel.find({assignee:id}).populate('assignee').populate('assigner').populate('tags');
 }
 export const getAssignedTStatus = (type: string,id:string) => {
-  return TaskModel.find({ assignee: id,status:type }).populate("assignee").populate("tags");
+  return TaskModel.find({ assignee: id, status: type })
+    .populate("assignee")
+    .populate("assigner")
+    .populate("tags");
 };
 export const updateStatus = (id: string, status: string) => {
-  return TaskModel.findByIdAndUpdate({_id:id},{status:status},{new:true}).populate("assignee").populate("tags");
+  return TaskModel.findByIdAndUpdate(
+    { _id: id },
+    { status: status },
+    { new: true }
+  )
+    .populate("assigner")
+    .populate("assignee")
+    .populate("tags");
 };
 export const getAssignerTasks = (id: string) => {
-  return TaskModel.find({assigner:id}).populate("assignee").populate("tags");
+  return TaskModel.find({ assigner: id })
+    .populate("assignee")
+    .populate("assigner")
+    .populate("tags");
 };
