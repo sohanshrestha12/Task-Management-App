@@ -125,13 +125,15 @@ export function DataTable<TData extends Task, TValue>({
       <div className="flex items-center gap-4 py-4">
         <Input
           placeholder={`Filter ${fieldToFilter}...`}
-          value={(table.getColumn(fieldToFilter)?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn(fieldToFilter)?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn(fieldToFilter)?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
-        <Select onValueChange={(value) => setFieldToFilter(value)} >
+        <Select onValueChange={(value) => setFieldToFilter(value)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Title" />
           </SelectTrigger>
@@ -170,7 +172,10 @@ export function DataTable<TData extends Task, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      style={{ maxWidth: "180px", wordBreak: "break-all" }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -196,13 +201,10 @@ export function DataTable<TData extends Task, TValue>({
         <Button
           variant="outline"
           size="sm"
-          onClick={
-            () => {
-              setPageIndex((old) => Math.max(old - 1, 0));
-              table.previousPage()
-            }
-            
-          }
+          onClick={() => {
+            setPageIndex((old) => Math.max(old - 1, 0));
+            table.previousPage();
+          }}
           disabled={!table.getCanPreviousPage()}
         >
           Previous
@@ -212,7 +214,8 @@ export function DataTable<TData extends Task, TValue>({
           size="sm"
           onClick={() => {
             setPageIndex((old) => (!table.getCanNextPage() ? old : old + 1));
-            table.nextPage()}}
+            table.nextPage();
+          }}
           disabled={!table.getCanNextPage()}
         >
           Next

@@ -14,6 +14,7 @@ import { Row } from "@tanstack/react-table";
 import { Task } from "./columns";
 import { useState } from "react";
 import UpdateTask from "../UpdateTask";
+import { useAuth } from "../Auth/ProtectedRoutes";
 
 interface ActionsCellProps {
   row: Row<Task>;
@@ -21,6 +22,7 @@ interface ActionsCellProps {
 
 const ActionCell: React.FC<ActionsCellProps> = ({ row }) => {
   const Task = row.original;
+  const {user} = useAuth();
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
 
@@ -47,7 +49,7 @@ const ActionCell: React.FC<ActionsCellProps> = ({ row }) => {
             Copy task ID 
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleUpdateDialogOpen}>
+          <DropdownMenuItem onClick={handleUpdateDialogOpen} disabled={user?._id !== Task.assigner._id}>
             Update
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDialogOpen}>
