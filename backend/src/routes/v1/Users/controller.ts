@@ -66,7 +66,8 @@ const UserController = {
 
   async getCurrentUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = res.locals.user;
+      const userBody = res.locals.user;
+      const user = await UserService.getUserById(userBody._id);
       return successResponse({
         response: res,
         message: "Retrieved Logged In user successfully",
@@ -76,7 +77,7 @@ const UserController = {
       next(error);
     }
   },
-  async getAllAssignee(req:Request,res:Response,next:NextFunction){
+  async getAllAssignee(req: Request, res: Response, next: NextFunction) {
     try {
       const assignee = await UserService.getAllAssignee();
       return successResponse({
@@ -88,34 +89,59 @@ const UserController = {
       next(error);
     }
   },
-  async getUserById(req:Request<{id:string},unknown,unknown>,res:Response,next:NextFunction){
+  async getUserById(
+    req: Request<{ id: string }, unknown, unknown>,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      const {id} = req.params;
+      const { id } = req.params;
       const user = await UserService.getUserById(id);
       return successResponse({
-        response:res,
-        message:"Retrieved User successfully",
-        data:user
-      })
+        response: res,
+        message: "Retrieved User successfully",
+        data: user,
+      });
     } catch (error) {
       next(error);
     }
   },
-  async getUnverifiedUser(req:Request<{email:string},unknown,unknown>,res:Response,next:NextFunction){
-    try{
-      const {email} = req.params;
+  async getUnverifiedUser(
+    req: Request<{ email: string }, unknown, unknown>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { email } = req.params;
       const user = await UserService.getUnverifiedUserByEmail(email);
-        return successResponse({
-          response: res,
-          message: "Retrieved Unverified User successfully",
-          data: user,
-        });
-
-
-    }catch(error){
+      return successResponse({
+        response: res,
+        message: "Retrieved Unverified User successfully",
+        data: user,
+      });
+    } catch (error) {
       next(error);
     }
-  }
+  },
+  async changeStatusColor(
+    req: Request<{ field: string; color: string }, unknown, unknown>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { color, field } = req.params;
+      const id = res.locals.user._id.toString();
+
+      const user = await UserService.changeStatusColor(id, color, field);
+      return successResponse({
+        response: res,
+        message: "Updated color successfully",
+        data: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 export default UserController;

@@ -14,6 +14,7 @@ export interface Task{
     comments?:[],
     tags?:[],
     isDeleted:boolean,
+
 }
 
 const TaskSchema = new mongoose.Schema<Task>({
@@ -66,6 +67,7 @@ const TaskSchema = new mongoose.Schema<Task>({
     required:true,
     unique:false
   },
+
 },{
     timestamps:true,
 });

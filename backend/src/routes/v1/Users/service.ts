@@ -3,6 +3,7 @@ import { sendVerificationEmail } from "../../../utils/OtpVerification";
 import { User } from "./model";
 import { deleteOtp, storeUserOtp } from "./otpVerification/repository";
 import {
+  changeStatusColor,
   createUserRepo,
   getAllAssignee,
   getUserByEmail,
@@ -59,6 +60,11 @@ const UserService = {
       throw new CustomError("Invalid Email",403);
     }
     return user;
+  },
+  async changeStatusColor(id:string,color:string,field:string){
+    await this.getUserById(id);
+    
+    return changeStatusColor(id,color,field);
   }
 };
 export default UserService;

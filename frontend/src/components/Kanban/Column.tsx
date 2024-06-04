@@ -6,13 +6,17 @@ import Task from "./Task";
 
 interface ColumnProps {
   column: { status: string; tasks: TaskInterface[] };
+  colors:{[key:string]:string}
+
 }
 interface DroppableParameterType {
   taskIndex: number;
   columnStatus: string;
 }
 
-const Column = ({ column }: ColumnProps) => {
+
+const Column = ({ column,colors }: ColumnProps) => {
+  const statusColor = colors[column.status] || 'black';
   const itemIds = column.tasks.map((task) => task._id);
   const { isOver, setNodeRef } = useDroppable({
     id: `${column.status}-col`,
@@ -23,10 +27,12 @@ const Column = ({ column }: ColumnProps) => {
   return (
     <div className="col-span-1 h-fit bg-gray-200 px-1">
       <div className="flex justify-between items-center bg-white mb-3 px-2 py-3">
-        <h2 className="font-medium text-center">
+        <h2 style={{ color: statusColor }} className="font-medium text-center">
           {column.status}
         </h2>
-        <p className="font-semibold">{column.tasks.length}</p>
+        <p className="font-semibold" style={{ color: statusColor }}>
+          {column.tasks.length}
+        </p>
       </div>
       <div ref={setNodeRef} style={{ backgroundColor }}>
         <SortableContext items={itemIds}>

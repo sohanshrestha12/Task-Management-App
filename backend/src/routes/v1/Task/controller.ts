@@ -146,7 +146,6 @@ const TaskController = {
   async updateStatus(req: Request<{id:string,status:string},unknown,unknown>, res: Response, next: NextFunction) {
     try {
       const { id,status } = req.params;
-      console.log(id,status);
       if(!id) throw new CustomError("Invalid operation",400);
       if(!status) throw new CustomError("Invalid operation",400);
       if(status == 'COMPLETED'){
@@ -180,6 +179,7 @@ const TaskController = {
     } catch (error) {
       next(error);
     }
-  }
+  },
+
 };
 export default TaskController;

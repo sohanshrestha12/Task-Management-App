@@ -1,3 +1,4 @@
+import { getUpdatedTaskStatus } from "@/api/Task";
 import {
   DndContext,
   DragEndEvent,
@@ -15,17 +16,21 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 import { Task as TaskInterface } from "../GridView/columns";
 import { useTasks } from "../context/taskContext";
 import Column from "./Column";
-import Task from "./Task";
-import { getUpdatedTaskStatus } from "@/api/Task";
-import { toast } from "sonner";
 import { checkValidity } from "./Rule";
+import Task from "./Task";
 
-const KanbanBoard = () => {
+interface KanbanBoardProps{
+  colors:{[key:string]:string}
+}
+
+const KanbanBoard = ({colors}:KanbanBoardProps) => {
   const { tasks, KanbanTask } = useTasks();
   const [activeTask, setActiveTask] = useState<TaskInterface | null>(null);
+
 
   useEffect(() => {
     console.log("acivetask", activeTask);
@@ -213,6 +218,7 @@ const KanbanBoard = () => {
   return (
     <div>
       <h1 className="my-5">Kanban view</h1>
+      
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
@@ -222,7 +228,7 @@ const KanbanBoard = () => {
       >
         <div className="grid grid-cols-4 bg-white gap-2 w-[82vw]">
           {columns.map((column) => (
-            <Column key={column.status} column={column} />
+            <Column key={column.status} column={column} colors={colors}/>
           ))}
         </div>
         {createPortal(

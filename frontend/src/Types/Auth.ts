@@ -8,10 +8,14 @@ export interface LoginUser {
   password: string;
 }
 
-export interface User{
-  _id:string
-  username:string;
-  email:string;
+export interface User {
+  _id: string;
+  username: string;
+  email: string;
+  todoColor: string;
+  inProgressColor: string;
+  testingColor: string;
+  completedColor:string;
 }
 export interface AuthContextType{
   user:User|null;

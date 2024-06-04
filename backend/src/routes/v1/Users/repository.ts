@@ -25,3 +25,22 @@ export const getUserByEmail = (email:string):Promise<UserDocument | null> =>{
 export const getAllAssignee = ():Promise<UserDocument[] | null> =>{
     return UserModel.find({role:"USER"}).select('-password');
 }
+
+export const changeStatusColor = (id:string,color:string,field:string):Promise<UserDocument | null> => {
+    let updateField = {}
+    switch (field) {
+      case "TODO":
+        updateField = { todoColor: "#"+color };
+        break;
+      case "INPROGRESS":
+        updateField = { inProgressColor: "#"+color };
+        break;
+      case "TESTING":
+        updateField = { testingColor: "#"+color };
+        break;
+      case "COMPLETED":
+        updateField = { completedColor: "#"+color };
+        break;
+    }
+    return UserModel.findByIdAndUpdate({_id:id},updateField,{new:true});
+}

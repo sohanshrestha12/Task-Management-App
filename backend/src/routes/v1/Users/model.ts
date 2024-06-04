@@ -9,6 +9,10 @@ export interface User {
   password: string;
   role?: string;
   isVerified?: boolean;
+  todoColor: string;
+  inProgressColor: string;
+  testingColor: string;
+  completedColor: string;
 }
 
 export const userPrivateFields = ['password','__v','createdAt','updatedAt'];
@@ -37,14 +41,38 @@ const userSchema = new mongoose.Schema<UserDocument>(
     },
     role: {
       type: String,
-      enum:Object.values(UserRoles),
+      enum: Object.values(UserRoles),
       required: false,
-      default:UserRoles.USER
+      default: UserRoles.USER,
     },
     isVerified: {
       type: Boolean,
       required: false,
-      default:false
+      default: false,
+    },
+    todoColor: {
+      type: String,
+      required: false,
+      unique: false,
+      default: "#000000",
+    },
+    inProgressColor: {
+      type: String,
+      required: false,
+      unique: false,
+      default: "#000000",
+    },
+    testingColor: {
+      type: String,
+      required: false,
+      unique: false,
+      default: "#000000",
+    },
+    completedColor: {
+      type: String,
+      required: false,
+      unique: false,
+      default: "#000000",
     },
   },
   {

@@ -4,7 +4,11 @@ import { useTasks } from "../context/taskContext";
 import { Task, columns } from "./columns";
 import { DataTable } from "./data-table";
 
-const Page = () => {
+interface PageProps {
+  colors:{[key:string]:string}
+}
+
+const Page = ({colors}:PageProps) => {
   // const [tasks, setTasks] = useState<Task[]>([]);
   const { tasks, deleteTasks, createTask } = useTasks();
   const deleteTasksAndUpdateList = async (selectedRows: Task[]) => {
