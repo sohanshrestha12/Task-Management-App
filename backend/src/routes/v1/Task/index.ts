@@ -1,10 +1,11 @@
 import { Router } from "express";
 import requireUser from "../../../Middleware/requireUser";
 import TaskController from "./controller";
+import activityTrack from "../../../Middleware/activityTrack";
 
 const TaskRouter = Router();
 
-TaskRouter.route("/").post(requireUser, TaskController.createTask);
+TaskRouter.route("/").post(requireUser,activityTrack('Created a new Task'), TaskController.createTask);
 TaskRouter.route("/getAssignedTasks").get(requireUser,TaskController.getAssignedTasks);
 TaskRouter.route("/getAllTodos").get(requireUser, TaskController.getAllStatus);
 TaskRouter.route("/").get(requireUser, TaskController.getAllTask);
