@@ -4,8 +4,7 @@ import { successResponse } from "../../../utils/HttpResponse";
 
 const UsersActivityController = {
     async getAllUserActivity(req:Request,res:Response,next:NextFunction){
-        const id = res.locals.user._id;
-        const activityLog = (await UsersActivityService.getAllUserActivity(id));
+        const activityLog = (await UsersActivityService.getAllUserActivity());
         const latestActivities = activityLog.reverse().slice(0, 10);
          return successResponse({
            response: res,

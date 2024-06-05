@@ -28,7 +28,7 @@ interface KanbanBoardProps{
 }
 
 const KanbanBoard = ({colors}:KanbanBoardProps) => {
-  const { tasks, KanbanTask } = useTasks();
+  const { tasks, KanbanTask ,updateTasks} = useTasks();
   const [activeTask, setActiveTask] = useState<TaskInterface | null>(null);
 
 
@@ -75,6 +75,7 @@ const KanbanBoard = ({colors}:KanbanBoardProps) => {
     try {
       const response = await getUpdatedTaskStatus(activeId, status);
       console.log("swappedColumn", response);
+      updateTasks(response.data.data);
       toast.success(`Moved to ${status} successfully`);
     } catch (error) {
       console.log(error);

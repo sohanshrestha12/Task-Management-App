@@ -1,5 +1,5 @@
 import { logout } from "@/api/Auth";
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const auth = useAuth();
   const [isActivityDialogOpen, setActivityDialogOpen] = useState(false);
-  const handleUpdateDialogOpen = () => {
+  const handleUpdateDialogOpen = (e:React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     setActivityDialogOpen(true);
   };
   const handleUpdateDialogClose = () => setActivityDialogOpen(false);
@@ -68,7 +69,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link to="/" onClick={handleUpdateDialogOpen}>
+              <Link to="" onClick={(e)=>handleUpdateDialogOpen(e)}>
                 Activity Logs
               </Link>
             </li>

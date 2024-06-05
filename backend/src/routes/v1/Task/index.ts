@@ -19,6 +19,7 @@ TaskRouter.route("/getAssignerTasks/:id").get(
 );
 TaskRouter.route("/updateStatus/:id/:status").post(
   requireUser,
+  activityTrack("Changed Task Status"),
   TaskController.updateStatus
 );
 
