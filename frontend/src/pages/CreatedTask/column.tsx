@@ -20,6 +20,7 @@ import { getUpdatedTaskStatus } from "@/api/Task";
 import { Task } from "@/components/GridView/columns";
 import axios from "axios";
 import { toast } from "sonner";
+import { Color } from "@/components/context/colorContext";
 
 
 const customSortPriority = (rowA: string, rowB: string) => {
@@ -44,8 +45,9 @@ const moveToTodo = async (id: string,status:string,updateTaskStatus:(task:Task)=
 };
 export const columns = (
   updateTaskStatus: (task: Task) => void,
-  handleUpdateDialogOpen:(task:Task)=>void,
-  user:User
+  handleUpdateDialogOpen: (task: Task) => void,
+  user: User,
+  colors: Color
 ): ColumnDef<Task>[] => [
   {
     accessorKey: "title",
@@ -64,7 +66,11 @@ export const columns = (
   },
   {
     accessorKey: "status",
-    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const color = colors[status] || "#000000";
+      return <span style={{ color: color }}>{status}</span>;
+    },
   },
   {
     accessorKey: "assignee",
@@ -156,7 +162,7 @@ export const columns = (
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={()=>handleUpdateDialogOpen(task)}
+                onClick={() => handleUpdateDialogOpen(task)}
                 disabled={user?._id !== task.assigner._id}
               >
                 Update
@@ -193,7 +199,6 @@ export const columns = (
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-       
         </>
       );
     },

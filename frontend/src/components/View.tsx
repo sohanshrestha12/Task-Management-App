@@ -1,33 +1,19 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import SwitchSelector from "react-switch-selector";
-import Page from "./GridView/Page";
-import KanbanBoard from "./Kanban/KanbanBoard";
 import { changeStatusColor } from "@/api/User";
 import axios from "axios";
+import { ChangeEvent, useEffect, useState } from "react";
+import SwitchSelector from "react-switch-selector";
 import { toast } from "sonner";
-import { useAuth } from "./Auth/ProtectedRoutes";
+import Page from "./GridView/Page";
+import KanbanBoard from "./Kanban/KanbanBoard";
+import { useColor } from "./context/colorContext";
 
 const View = () => {
-  const {user} = useAuth();
+  const {colors,changeStateColor}= useColor();
   const [selectedComponent, setSelectedComponent] = useState(() => {
     const storedPage = localStorage.getItem("page");
     return storedPage ? storedPage : "kanban";
   });
-   const [colors, setColors] = useState({
-     TODO: "#000000",
-     INPROGRESS: "#000000",
-     TESTING: "#000000",
-     COMPLETED: "#000000",
-   });
-   useEffect(()=>{
-    setColors({
-      TODO: user?.todoColor ?? "#000000",
-      INPROGRESS: user?.inProgressColor ?? "#000000",
-      TESTING: user?.testingColor ?? "#000000",
-      COMPLETED: user?.completedColor ?? "#000000",
-    });
-    console.log("colors from the state",colors);
-   },[user]);
+
   useEffect(() => {
     localStorage.setItem("page", selectedComponent);
   }, [selectedComponent]);
@@ -46,10 +32,7 @@ const View = () => {
         const { name, value } = e.target;
         const res = await changeStatusColor(name,value);
         console.log(res);
-        setColors((prevColors) => ({
-          ...prevColors,
-          [name]: value,
-        }));
+        changeStateColor(name,value);
         console.log(`${name} changed to:`, value);
         
       } catch (error) {

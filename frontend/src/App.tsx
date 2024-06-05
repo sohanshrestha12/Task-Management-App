@@ -13,32 +13,35 @@ import InProgress from "./pages/Inprogress";
 import Testing from "./pages/Testing";
 import Completed from "./pages/Completed";
 import CreatedTasks from "./pages/CreatedTask";
+import { ColorProvider } from "./components/context/colorContext";
 const App = () => {
   console.log("hello world from app");
   return (
     <AuthProvider>
       <TaskProvider>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <RequireAuth>
-                <Layout />
-              </RequireAuth>
-            }
-          >
-            <Route index element={<View />} />
-            <Route path="assigned" element={<Assigned />}></Route>
-            <Route path="todo" element={<Todo />}></Route>
-            <Route path="inProgress" element={<InProgress />}></Route>
-            <Route path="testing" element={<Testing />}></Route>
-            <Route path="completed" element={<Completed />}></Route>
-            <Route path="createdTasks" element={<CreatedTasks />}></Route>
-          </Route>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="otpVerification/:id" element={<OtpVerification />} />
-        </Routes>
+        <ColorProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Layout />
+                </RequireAuth>
+              }
+            >
+              <Route index element={<View />} />
+              <Route path="assigned" element={<Assigned />}></Route>
+              <Route path="todo" element={<Todo />}></Route>
+              <Route path="inProgress" element={<InProgress />}></Route>
+              <Route path="testing" element={<Testing />}></Route>
+              <Route path="completed" element={<Completed />}></Route>
+              <Route path="createdTasks" element={<CreatedTasks />}></Route>
+            </Route>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="otpVerification/:id" element={<OtpVerification />} />
+          </Routes>
+        </ColorProvider>
       </TaskProvider>
     </AuthProvider>
   );

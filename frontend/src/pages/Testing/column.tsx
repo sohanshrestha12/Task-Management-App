@@ -20,6 +20,7 @@ import { Task } from "@/components/GridView/columns";
 import { getUpdatedTaskStatus } from "@/api/Task";
 import { toast } from "sonner";
 import axios from "axios";
+import { Color } from "@/components/context/colorContext";
 
 const customSortPriority = (rowA: string, rowB: string) => {
   const order = ["LOW", "MEDIUM", "HIGH"];
@@ -45,7 +46,7 @@ const moveToTodo = async (
   }
 };
 
-export const columns = (updateTaskStatus: (task: Task) => void): ColumnDef<Task>[] => [
+export const columns = (updateTaskStatus: (task: Task) => void,colors:Color): ColumnDef<Task>[] => [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -63,7 +64,11 @@ export const columns = (updateTaskStatus: (task: Task) => void): ColumnDef<Task>
   },
   {
     accessorKey: "status",
-    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      const color = colors[status] || "#000000";
+      return <span style={{ color: color }}>{status}</span>;
+    },
   },
   {
     accessorKey: "assignee",

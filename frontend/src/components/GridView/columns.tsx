@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "../ui/button";
 import ActionCell from "./ActionCell";
+import { Color } from "../context/colorContext";
 
 
 
@@ -31,7 +32,7 @@ const customSortPriority = (rowA: string, rowB: string) => {
   return order.indexOf(rowA) - order.indexOf(rowB);
 };
 
-export const columns: ColumnDef<Task>[] = [
+export const columns = (colors:Color): ColumnDef<Task>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -71,7 +72,11 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    cell:({row})=>{
+      const status = row.original.status;
+      const color= colors[status] || "#000000";
+      return (<span style={{color:color}}>{status}</span>)
+    }
   },
   {
     accessorKey: "assignee",
@@ -111,16 +116,16 @@ export const columns: ColumnDef<Task>[] = [
       let color = "";
       switch (priority) {
         case "LOW":
-          color = "green"; 
+          color = "green";
           break;
         case "MEDIUM":
-          color = "orange"; 
+          color = "orange";
           break;
         case "HIGH":
           color = "red";
           break;
         default:
-          color = "black"; 
+          color = "black";
       }
       return <span style={{ color }}>{priority}</span>;
     },

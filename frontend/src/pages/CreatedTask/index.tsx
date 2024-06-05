@@ -6,6 +6,7 @@ import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import UpdateTask from "@/components/UpdateTask";
 import { Task } from "@/components/GridView/columns";
 import { PaginationState } from "@tanstack/react-table";
+import { useColor } from "@/components/context/colorContext";
 
 const CreatedTasks = () => {
   const { assigner, updateTasks } = useTasks();
@@ -16,6 +17,7 @@ const CreatedTasks = () => {
       pageIndex: 0,
       pageSize: 10,
     });
+    const {colors} = useColor();
   
 
   const handleUpdateDialogOpen = (task: Task) => {
@@ -30,9 +32,9 @@ const CreatedTasks = () => {
     <div className="px-12 mt-[95px] py-14 ml-1 w-[82vw] col-span-12 col-start-3 rounded border border-white overflow-x-hidden bg-white">
       <h1 className="mb-5">Assigned Tasks</h1>
       <DataTable
-      pagination={pagination}
-      setPagination={setPagination}
-        columns={columns(updateTasks, handleUpdateDialogOpen, user!)}
+        pagination={pagination}
+        setPagination={setPagination}
+        columns={columns(updateTasks, handleUpdateDialogOpen, user!, colors)}
         data={assigner}
       />
       {activeTask && (

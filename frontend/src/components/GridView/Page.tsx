@@ -57,7 +57,7 @@ const Page = ({colors}:PageProps) => {
         <CreateTask setNewTask={setNewTask} />
       </div>
       <DataTable
-        columns={columns}
+        columns={columns(colors)}
         data={tasks}
         onDelete={deleteTasksAndUpdateList}
       />

@@ -21,7 +21,7 @@ const TagsController = {
       const { taskId } = req.params;
       const body = req.body;
       const userId = res.locals.user._id as string;
-      await TaskService.getTaskById(taskId);
+      // await TaskService.getTaskById(taskId);
       const result = await TagsService.createTags(body, taskId, userId);
       return successResponse({
         response: res,
