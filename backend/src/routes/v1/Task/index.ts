@@ -11,7 +11,7 @@ TaskRouter.route("/getAllTodos").get(requireUser, TaskController.getAllStatus);
 TaskRouter.route("/").get(requireUser, TaskController.getAllTask);
 TaskRouter.route("/:id").get(requireUser, TaskController.getTaskById);
 TaskRouter.route("/:id").delete(requireUser, TaskController.deleteTask);
-TaskRouter.route("/:id").patch(requireUser, TaskController.updateTask);
+TaskRouter.route("/:id").patch(requireUser,activityTrack('Updated Task'), TaskController.updateTask);
 TaskRouter.route("/").delete(requireUser, TaskController.BulkDelete);
 TaskRouter.route("/getAssignerTasks/:id").get(
   requireUser,
