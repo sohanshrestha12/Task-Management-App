@@ -27,6 +27,7 @@ import { createComment } from "@/api/Task";
 import { useTasks } from "./context/taskContext";
 import { Comment } from "@/Types/Comment";
 import CommentLists from "./CommentLists";
+import { CommentValidation } from "@/Validation/CommentValidation";
 
 interface ViewTaskDetailsProps {
   isOpen: boolean;
@@ -191,7 +192,11 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={handleSubmit}
+                  validationSchema={CommentValidation}
+                >
                   {({ isSubmitting }: { isSubmitting: boolean }) => (
                     <Form
                       className="flex items-center gap-2 w-full"
