@@ -5,6 +5,11 @@ import { Task as TaskInterface } from "../GridView/columns";
 import UpdateTask from "../UpdateTask";
 import { useState } from "react";
 import { useColor } from "../context/colorContext";
+import { FaTrash } from "react-icons/fa";
+import axios from "axios";
+import { toast } from "sonner";
+import { deleteTask } from "@/api/Task";
+import { useTasks } from "../context/taskContext";
 
 interface TaskProps {
   task: TaskInterface;
@@ -13,6 +18,7 @@ interface TaskProps {
 const Task = ({ task }: TaskProps) => {
   const { colors } = useColor();
   const statusColor = colors[task.status];
+  const {tasks, deleteTasks } = useTasks();
 
   const {
     attributes,
@@ -34,6 +40,25 @@ const Task = ({ task }: TaskProps) => {
     setUpdateDialogOpen(true);
   };
   const handleUpdateDialogClose = () => setUpdateDialogOpen(false);
+
+  const handleDelete = async(
+    id: string,
+    e: React.MouseEvent<SVGElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    try {
+      const res = await deleteTask(id);
+      console.log('deleted response',res);
+      const newUpdatedTask = tasks.filter((task)=>(task._id !== res.data?.data?._id));
+      deleteTasks(newUpdatedTask);
+      toast.success('Deleted tsk successfully');
+    } catch (error) {
+      console.log(error);
+      if(axios.isAxiosError(error)){
+        toast.error(error.response?.data.message);
+      }
+    }
+  };
 
   if (isDragging) {
     return (
@@ -62,6 +87,7 @@ const Task = ({ task }: TaskProps) => {
       >
         <div className="flex justify-between items-center mb-5">
           <h3 className="font-medium leading-tight">{task.title}</h3>
+          <FaTrash onClick={(e)=>{handleDelete(task._id,e)}} className="text-red-500 text-xl hover:text-red-600 cursor-pointer"/>
         </div>
 
         <div className="flex items-center gap-5">

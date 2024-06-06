@@ -46,3 +46,7 @@ export const createComment = (taskId:string,values:Comment)=>{
 export const deleteComment = (taskId:string,commentId:string)=>{
   return TaskUrl.delete(`/tasks/${taskId}/comment/${commentId}`);
 }
+
+export const deleteTask = (taskId:string)=>{
+  return TaskUrl.delete(`/tasks/${taskId}`);
+}
