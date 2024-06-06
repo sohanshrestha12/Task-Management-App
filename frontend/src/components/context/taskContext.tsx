@@ -7,8 +7,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Task } from "../GridView/columns";
 import { useAuth } from "../Auth/ProtectedRoutes";
+import { Task } from "../GridView/columns";
 
 interface TaskContextValue {
   tasks: Task[];
@@ -77,6 +77,8 @@ export const TaskProvider = ({ children }: TaskProviderProps) => {
   useEffect(()=>{
     console.log('alltasks are:',tasks);
   },[tasks]);
+
+
 
   const setKanbanTasks = (allUpdatedTask:Task[]) =>{
     setTasks(allUpdatedTask);

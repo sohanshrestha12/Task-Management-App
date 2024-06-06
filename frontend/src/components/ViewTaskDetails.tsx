@@ -127,6 +127,15 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
     return "bg-green-500";
   };
   console.log("this is comment length", task.comments?.length);
+
+   const deleteStateComment = (deletedComment: Comment) => {
+     const newComments = comments.filter(
+       (comment) => comment._id !== deletedComment._id
+     );
+
+    
+     setComments(newComments);
+   };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       {/* <DialogTrigger>Open</DialogTrigger> */}
@@ -215,8 +224,12 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
                   <div className="flex py-2 w-full flex-col px-2">
                     {comments.map((comment) => (
                       <>
-                        {console.log(comment)}
-                        <CommentLists key={comment._id} comment={comment} />
+                        <CommentLists
+                          key={comment._id}
+                          comment={comment}
+                          taskId={task._id}
+                          deleteStateComment={deleteStateComment}
+                        />
                       </>
                     ))}
                   </div>

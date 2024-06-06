@@ -42,3 +42,7 @@ export const getAssignerTasks = (id:string)=>{
 export const createComment = (taskId:string,values:Comment)=>{
   return TaskUrl.post(`/tasks/${taskId}/comment`,values);
 }
+
+export const deleteComment = (taskId:string,commentId:string)=>{
+  return TaskUrl.delete(`/tasks/${taskId}/comment/${commentId}`);
+}
