@@ -4,12 +4,16 @@ import DefaultUser from "../DefaultUser";
 import { Task as TaskInterface } from "../GridView/columns";
 import UpdateTask from "../UpdateTask";
 import { useState } from "react";
+import { useColor } from "../context/colorContext";
 
 interface TaskProps {
   task: TaskInterface;
 }
 
 const Task = ({ task }: TaskProps) => {
+  const { colors } = useColor();
+  const statusColor = colors[task.status];
+
   const {
     attributes,
     listeners,
@@ -23,10 +27,13 @@ const Task = ({ task }: TaskProps) => {
     transform: CSS.Transform.toString(transform),
   };
 
-    const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
+  const [isUpdateDialogOpen, setUpdateDialogOpen] = useState(false);
 
-   const handleUpdateDialogOpen = () =>{console.log('update dialog'); setUpdateDialogOpen(true)};
-   const handleUpdateDialogClose = () => setUpdateDialogOpen(false);
+  const handleUpdateDialogOpen = () => {
+    console.log("update dialog");
+    setUpdateDialogOpen(true);
+  };
+  const handleUpdateDialogClose = () => setUpdateDialogOpen(false);
 
   if (isDragging) {
     return (
@@ -39,6 +46,7 @@ const Task = ({ task }: TaskProps) => {
       </div>
     );
   }
+
   return (
     //   <div className="touch-none" ref={setNodeRef} style={style} {...listeners} {...attributes}>{task.title}</div>
     <>
@@ -48,17 +56,32 @@ const Task = ({ task }: TaskProps) => {
         onClick={handleUpdateDialogOpen}
         {...attributes}
         {...listeners}
-        className={`min-h-[100px] hover:border-green-400 py-3 ps-3 pe-10 break-words border-2 bg-white rounded-sm ${
+        className={`min-h-[100px] hover:border-green-400 py-3 ps-3 pe-5 break-words border-2 bg-white rounded-sm ${
           isDragging ? "opacity-50" : ""
         }`}
       >
-        <h3 className="font-medium leading-tight mb-5">{task.title}</h3>
+        <div className="flex justify-between items-center mb-5">
+          <h3 className="font-medium leading-tight">{task.title}</h3>
+        </div>
+
         <div className="flex items-center gap-5">
-          <p>{task.status}</p>
+          <p style={{ color: statusColor }}>{task.status}</p>
           <div className="rounded-full border-none h-[30px] w-[30px] flex items-center gap-3">
             <DefaultUser />
             {task.assigner.username}
           </div>
+        </div>
+        <div className="flex mt-5 pb-1 gap-2 flex-wrap">
+          {task.tags.map((tag) => (
+            <div key={tag._id}>
+              <span
+                style={{ backgroundColor: tag.color ?? "lightGreen" }}
+                className="px-2 py-1 text-white rounded-full"
+              >
+                {tag.title}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
       <UpdateTask
