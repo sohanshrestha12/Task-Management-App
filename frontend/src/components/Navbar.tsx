@@ -69,7 +69,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link to="" onClick={(e)=>handleUpdateDialogOpen(e)}>
+              <Link to="" onClick={(e) => handleUpdateDialogOpen(e)}>
                 Activity Logs
               </Link>
             </li>
@@ -85,7 +85,7 @@ const Navbar = () => {
             onClick={toggleDropdown}
             className="flex items-center cursor-pointer"
           >
-            {auth.user?.username}
+            <span className="capitalize">{auth.user?.username} </span>
             {dropdownVisible ? (
               <FaChevronUp className="ml-2" />
             ) : (

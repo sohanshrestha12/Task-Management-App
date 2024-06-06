@@ -13,20 +13,23 @@ const CommentsController = {
   ) {
     try {
       const { taskId } = req.params;
+
       const body = req.body;
       const userId = res.locals.user._id as string;
       await TaskService.getTaskById(taskId);
-      const result = await CommentsService.createComment(body, taskId, userId);
+      const {updatedComment,comment} = await CommentsService.createComment(body, taskId, userId);
+      const reversedComments = updatedComment?.comments?.reverse();
       return successResponse({
         response: res,
         message: "Commented successfully",
-        data: result,
+        data: {reversedComments,comment},
         status: 201,
       });
     } catch (error) {
       next(error);
     }
   },
+
   async getCommentById(
     req: Request<{ id: string }, unknown, unknown>,
     res: Response,
@@ -57,15 +60,15 @@ const CommentsController = {
 
       const body = req.body;
       const userId = res.locals.user._id as string;
-        const task = await TaskService.getTaskById(taskId);
-        if (!task || !task.comments) {
-          throw new CustomError("task doesnt exist", 404);
-        }
-        const CommentExists = task.comments.includes(id as never);
+      const task = await TaskService.getTaskById(taskId);
+      if (!task || !task.comments) {
+        throw new CustomError("task doesnt exist", 404);
+      }
+      const CommentExists = task.comments.includes(id as never);
 
-        if (!CommentExists) {
-          return res.status(404).json({ message: "Comment not found in task" });
-        }
+      if (!CommentExists) {
+        return res.status(404).json({ message: "Comment not found in task" });
+      }
       const result = await CommentsService.updateComment(body, id, userId);
       return successResponse({
         response: res,

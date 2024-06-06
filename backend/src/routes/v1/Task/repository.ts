@@ -20,8 +20,9 @@ export const addCommentToTask = (taskID: string, commentId: string) => {
       $push: {
         comments: new mongoose.Types.ObjectId(commentId),
       },
-    }
-  );
+    },
+    {new:true}
+  ).populate({path:'comments',populate:{path:'user'}}).populate('tags').populate('assigner').populate('assignee');
 };
 
 export const addTagsToTask = (taskId: string, tagId: string) => {
@@ -57,7 +58,8 @@ export const getAllTask = (): Promise<Task[]> => {
   return TaskModel.find()
     .populate("assignee")
     .populate("assigner")
-    .populate("tags");
+    .populate("tags")
+    .populate({ path: "comments", populate: { path: "user" } });
 };
 
 export const deleteTask = (
@@ -104,3 +106,4 @@ export const getAssignerTasks = (id: string) => {
     .populate("assigner")
     .populate("tags");
 };
+

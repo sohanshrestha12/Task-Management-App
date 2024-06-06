@@ -11,9 +11,10 @@ import {
 export const CommentsService = {
   async createComment(data: Comment, taskId: string, userId: string) {
     const comment = await createComment(data, userId);
-    await addCommentToTask(taskId, comment._id.toString());
-    return comment;
+    const updatedComment  = await addCommentToTask(taskId, comment._id.toString());
+    return {comment,updatedComment};
   },
+
   async getCommentById(id: string) {
     const comment = await getComment(id);
     if (!comment) {

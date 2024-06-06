@@ -12,14 +12,14 @@ import { Color } from "../context/colorContext";
 export interface Task {
   assignee?: [{_id?:string; username: string }];
   assigner: {_id:string,username:string};
-  comments?: [];
+  comments?: [{_id:string,content:string}];
   createdAt?: string;
   description: string;
   dueDate: string;
   isDeleted?: boolean;
   priority: "LOW" | "MEDIUM" | "HIGH";
   status: "TODO" | "INPROGRESS" | "TESTING" | "COMPLETED";
-  tags: [{ _id:string,title: string }];
+  tags: [{ _id:string,title: string,color?:string}];
   title: string;
   updatedAt?: string;
   __v?: number;

@@ -1,10 +1,11 @@
 import { Comment, CommentDocument, CommentModel } from "./model";
 
-export const createComment = (
+export const createComment = async(
   data: Comment,
   userId: string
 ): Promise<CommentDocument> => {
   const comment = new CommentModel({ ...data, user: userId });
+  await comment.populate('user');
   return comment.save();
 };
 

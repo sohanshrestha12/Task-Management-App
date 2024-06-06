@@ -143,17 +143,25 @@ const TaskController = {
       next(error);
     }
   },
-  async updateStatus(req: Request<{id:string,status:string},unknown,unknown>, res: Response, next: NextFunction) {
+  async updateStatus(
+    req: Request<{ id: string; status: string }, unknown, unknown>,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      const { id,status } = req.params;
-      if(!id) throw new CustomError("Invalid operation",400);
-      if(!status) throw new CustomError("Invalid operation",400);
-      if(status == 'COMPLETED'){
+      const { id, status } = req.params;
+      if (!id) throw new CustomError("Invalid operation", 400);
+      if (!status) throw new CustomError("Invalid operation", 400);
+      if (status == "COMPLETED") {
         const task = await TaskService.getTaskById(id);
-        if(!task) throw new CustomError("Invalid operation",400);
-        if(task.status !== "TESTING") throw new CustomError("Cannot directly move to Completed.",400);
+        if (!task) throw new CustomError("Invalid operation", 400);
+        if (task.status !== "TESTING")
+          throw new CustomError("Cannot directly move to Completed.", 400);
       }
-      const updateStatus = await TaskService.updateStatus(id?.toString(),status?.toString());
+      const updateStatus = await TaskService.updateStatus(
+        id?.toString(),
+        status?.toString()
+      );
       return successResponse({
         response: res,
         message: "Task status updated successfully",
@@ -164,12 +172,16 @@ const TaskController = {
       next(error);
     }
   },
-  async getAssignerTasks(req:Request<{id:string},unknown,unknown>,res:Response,next:NextFunction){
+  async getAssignerTasks(
+    req: Request<{ id: string }, unknown, unknown>,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      const {id} = req.params;
-      if(!id) throw new CustomError('Invalid operation',400);
+      const { id } = req.params;
+      if (!id) throw new CustomError("Invalid operation", 400);
       const getAssignerTask = await TaskService.getAssignerTasks(id);
-      if(!getAssignerTask) throw new CustomError('task does not exist',404);
+      if (!getAssignerTask) throw new CustomError("task does not exist", 404);
       return successResponse({
         response: res,
         message: "Assigner's tasks retrieved successfully",

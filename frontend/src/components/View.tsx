@@ -65,25 +65,31 @@ const View = () => {
         </Routes> */}
       </div>
       <div className=" mt-[100px] flex w-[200px]">
+        <div className="border rounded-full">
+          <input
+            className="border rounded-full"
+            type="color"
+            name="TODO"
+            value={colors.TODO}
+            onChange={handleColorChange}
+          />
+        </div>
         <input
-          type="color"
-          name="TODO"
-          value={colors.TODO}
-          onChange={handleColorChange}
-        />
-        <input
+          className="border rounded-full"
           type="color"
           name="INPROGRESS"
           value={colors.INPROGRESS}
           onChange={handleColorChange}
         />
         <input
+          className="border rounded-full"
           type="color"
           name="TESTING"
           value={colors.TESTING}
           onChange={handleColorChange}
         />
         <input
+          className="border rounded-full"
           type="color"
           name="COMPLETED"
           value={colors.COMPLETED}

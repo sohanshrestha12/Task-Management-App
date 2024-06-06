@@ -3,6 +3,7 @@ import CreateTask from "@/components/CreateTask";
 import { TaskUrl } from "@/config/Axios";
 import { Task } from "@/components/GridView/columns";
 import { FormValues } from "@/components/UpdateTask";
+import { Comment } from "@/Types/Comment";
 
 export const getAllTasks = () => {
   return TaskUrl.get("/tasks");
@@ -36,4 +37,8 @@ export const getUpdatedTaskStatus = (id:string,status:string)=>{
 
 export const getAssignerTasks = (id:string)=>{
   return TaskUrl.get(`/tasks/getAssignerTasks/${id}`);
+}
+
+export const createComment = (taskId:string,values:Comment)=>{
+  return TaskUrl.post(`/tasks/${taskId}/comment`,values);
 }
