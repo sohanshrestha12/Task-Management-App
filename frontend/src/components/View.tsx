@@ -46,8 +46,8 @@ const View = () => {
   };
 
   return (
-    <div className="ml-[230px] flex justify-between w-[80vw]">
-      <div className="w-[300px] h-[30px] col-start-3 col-span-6 mt-[100px] my-2">
+    <div className="ml-[230px] flex justify-between sm:mb-5 flex-wrap lg:w-[80vw]">
+      <div className="w-[300px] sm:w-[full] h-[30px] col-start-3 col-span-6 md:mt-[100px] lg:mt-[100px] my-2">
         <SwitchSelector
           options={options}
           onChange={
@@ -64,7 +64,7 @@ const View = () => {
           <Route path="/grid" element={<Page/>} />
         </Routes> */}
       </div>
-      <div className=" mt-[100px] flex w-[200px]">
+      <div className=" lg:mt-[100px] flex w-[200px]">
         <div className="border rounded-full">
           <input
             className="border rounded-full"

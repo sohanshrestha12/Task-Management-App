@@ -52,7 +52,7 @@ const Page = ({colors}:PageProps) => {
       <h1 className="py-2 font-bold text-xl mb-5">
         Grid View
       </h1>
-      <div className="flex justify-between">
+      <div className="flex flex-wrap justify-between">
         <h1>All Tasks</h1>
         <CreateTask setNewTask={setNewTask} />
       </div>

@@ -227,7 +227,7 @@ const KanbanBoard = ({colors}:KanbanBoardProps) => {
         onDragOver={handleDragOver}
         collisionDetection={closestCorners}
       >
-        <div className="grid grid-cols-4 bg-white gap-2 w-[82vw]">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 bg-white gap-2 w-[82vw]">
           {columns.map((column) => (
             <Column key={column.status} column={column} colors={colors}/>
           ))}
