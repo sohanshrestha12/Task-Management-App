@@ -59,6 +59,9 @@ const UserService = {
     if(!user){
       throw new CustomError("Invalid Email",403);
     }
+    const otp = generateOtp();
+    sendVerificationEmail(user.email, otp);
+    await storeUserOtp(otp, user._id.toString());
     return user;
   },
   async changeStatusColor(id:string,color:string,field:string){

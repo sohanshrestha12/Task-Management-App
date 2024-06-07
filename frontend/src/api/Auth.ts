@@ -26,4 +26,8 @@ export const logout = ()=>{
     return TaskUrl.post("/auth/logout");
 }
 
+export const getUserByEmail = (email:string) =>{
+    return TaskUrl.post(`/users/getUnverifiedUser/${email}`);
+}
+
 

@@ -1,5 +1,5 @@
 import { LoginUser } from "@/Types/Auth";
-import { getCurrentUser, login } from "@/api/Auth";
+import { getCurrentUser, getUserByEmail, login } from "@/api/Auth";
 import { useAuth } from "@/components/Auth/ProtectedRoutes";
 import CustomField from "@/components/CustomField";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,8 @@ const Login = () => {
       if (axios.isAxiosError(error)) {
         toast.error(error?.response?.data?.message);
         if(error.response?.data.message === "Not verified Yet" && error.response.data.status === 403){
-          console.log("User is not verified yet. Please verify")
+          const unverifiedUser = await getUserByEmail(values.email);
+          navigate(`/otpVerification/${unverifiedUser.data?.data._id}`);
         }
         console.log(error);
       }

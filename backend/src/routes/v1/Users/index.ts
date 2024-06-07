@@ -11,7 +11,6 @@ UserRouter.route("/changeColor/:field/:color").patch(
   requireUser,
   UserController.changeStatusColor
 );
-
 UserRouter.route('/getUnverifiedUser/:email').post(UserController.getUnverifiedUser);
 UserRouter.route('/getCurrentUser').get(requireUser, UserController.getCurrentUser);
 UserRouter.route('/getAllAssignee').get(requireUser,UserController.getAllAssignee);
