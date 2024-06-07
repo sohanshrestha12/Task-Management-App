@@ -68,6 +68,8 @@ const TaskController = {
       const { id } = req.params;
       const userId = res.locals.user._id;
       const result = await TaskService.deleteTask(id, userId);
+      await activityTrack("Deleted Task", req, res, next,result.title);
+
       return successResponse({
         response: res,
         message: "Task Deleted Successfully",

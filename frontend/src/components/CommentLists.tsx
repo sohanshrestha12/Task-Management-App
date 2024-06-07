@@ -38,7 +38,6 @@ const CommentLists = ({
       deleteStateComment(res.data.data.res);
 
       toast.success("comment deleted successfully");
-      console.log(res);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data?.message);

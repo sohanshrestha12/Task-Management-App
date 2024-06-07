@@ -4,11 +4,11 @@ import TaskController from "./controller";
 
 const TaskRouter = Router();
 
-TaskRouter.route("/").post(
+TaskRouter.route("/").post(requireUser, TaskController.createTask);
+TaskRouter.route("/getAssignedTasks").get(
   requireUser,
-  TaskController.createTask,
+  TaskController.getAssignedTasks
 );
-TaskRouter.route("/getAssignedTasks").get(requireUser,TaskController.getAssignedTasks);
 TaskRouter.route("/getAllTodos").get(requireUser, TaskController.getAllStatus);
 TaskRouter.route("/").get(requireUser, TaskController.getAllTask);
 TaskRouter.route("/:id").get(requireUser, TaskController.getTaskById);
@@ -23,6 +23,5 @@ TaskRouter.route("/updateStatus/:id/:status").post(
   requireUser,
   TaskController.updateStatus
 );
-
 
 export default TaskRouter;

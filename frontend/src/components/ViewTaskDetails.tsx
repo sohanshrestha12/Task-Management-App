@@ -55,7 +55,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
   }
   const { updateTasks } = useTasks();
   const handleSubmit = async (values: commentValue,{resetForm}:FormikHelpers<commentValue>) => {
-    console.log(values);
+    // console.log(values);
     try {
       const res = await createComment(task._id, values);
       resetForm({values:initialValues});
@@ -127,7 +127,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
 
     return "bg-green-500";
   };
-  console.log("this is comment length", task.comments?.length);
+  // console.log("this is comment length", task.comments?.length);
 
    const deleteStateComment = (deletedComment: Comment) => {
      const newComments = comments.filter(

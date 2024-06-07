@@ -34,7 +34,7 @@ export function ActivityLog({ isOpen, onClose }: ActivityLogsProps) {
         const res = await getUserActivityLogs();
         // setActivityLogs(res.data.data.)
         setActivityLogs(res.data.data);
-        console.log("this is activity logs details", res);
+        // console.log("this is activity logs details", res);
       } catch (error) {
         console.log(error);
       }
