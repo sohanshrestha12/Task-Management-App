@@ -14,8 +14,8 @@ const AuthService = {
     if(!user.isVerified) {
       throw new CustomError("Not verified Yet",403)
     };
-
-
+   
+    
     const isValid = await user.comparePassword(data.password);
     if (!isValid) throw new CustomError("Invalid user credentials", 401);
     const accessToken = signJwt(

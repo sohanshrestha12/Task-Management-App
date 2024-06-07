@@ -19,7 +19,7 @@ export const updateUserVerification = (id:string):Promise<UserDocument | null>=>
 }
 
 export const getUserByEmail = (email:string):Promise<UserDocument | null> =>{
-    return UserModel.findOne({email:email}).select('-password');
+    return UserModel.findOne({email:email});
 }
 
 export const getAllAssignee = ():Promise<UserDocument[] | null> =>{

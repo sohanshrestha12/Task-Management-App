@@ -159,7 +159,7 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
                     <p style={{ color: color }}>{task.status}</p>
                     <div className="flex flex-wrap gap-2">
                       {task.tags.map((tag) => (
-                        <span
+                        <span key={tag._id}
                           className={`px-2 py-1 ${getColorClass(
                             tag.color!
                           )} h-fit rounded-full text-white`}
@@ -228,14 +228,12 @@ const ViewTaskDetails: React.FC<ViewTaskDetailsProps> = ({
                 ) : (
                   <div className="flex py-2 w-full flex-col px-2">
                     {comments.map((comment) => (
-                      <>
                         <CommentLists
                           key={comment._id}
                           comment={comment}
                           taskId={task._id}
                           deleteStateComment={deleteStateComment}
                         />
-                      </>
                     ))}
                   </div>
                 )}

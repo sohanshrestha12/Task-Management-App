@@ -1,6 +1,7 @@
 import mongoose,{Document} from "mongoose";
 import bcrypt from 'bcrypt';
 import { UserRoles } from "../../../enums/User-role.enum";
+import CustomError from "../../../utils/Error";
 
 
 export interface User {
@@ -93,7 +94,7 @@ userSchema.pre<UserDocument>('save',async function (next){
 });
 
 userSchema.methods.comparePassword = async function(candidatePassword:string){
-    if(!this.password) console.log('Invalid Password or Email',401);
+    if(!this.password) throw new CustomError  ('Invalid Password or Email',401);
     return await bcrypt.compare(candidatePassword,this.password);
 }
 
