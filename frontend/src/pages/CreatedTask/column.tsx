@@ -47,7 +47,8 @@ export const columns = (
   updateTaskStatus: (task: Task) => void,
   handleUpdateDialogOpen: (task: Task) => void,
   user: User,
-  colors: Color
+  colors: Color,
+  handleDeleteTask:(id:string) => void,
 ): ColumnDef<Task>[] => [
   {
     accessorKey: "title",
@@ -196,6 +197,9 @@ export const columns = (
                 }
               >
                 Move to Completed
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>{handleDeleteTask(task._id)}} >
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
