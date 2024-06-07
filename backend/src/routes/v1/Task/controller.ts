@@ -3,9 +3,13 @@ import { Task } from "./model";
 import { TaskService } from "./service";
 import { successResponse } from "../../../utils/HttpResponse";
 import CustomError from "../../../utils/Error";
+import activityTrack from "../../../Middleware/activityTrack";
+interface ParamsDictionary {
+  [key: string]: string;
+}
 const TaskController = {
   async createTask(
-    req: Request<unknown, unknown, Task>,
+    req: Request<ParamsDictionary, unknown, Task>,
     res: Response,
     next: NextFunction
   ) {
@@ -13,6 +17,7 @@ const TaskController = {
       const body = req.body;
       const userId = res.locals.user._id as string;
       const result = await TaskService.createTask(body, userId);
+      await activityTrack("Created a new Task", req, res, next);
       return successResponse({
         response: res,
         message: "Successfully created task",
@@ -100,6 +105,7 @@ const TaskController = {
       const { id } = req.params;
       const body = req.body;
       const result = await TaskService.updateTask(body, id);
+      await activityTrack("Updated Task", req, res, next);
       return successResponse({
         response: res,
         message: "Updated Task Successfully",
@@ -158,6 +164,8 @@ const TaskController = {
         if (task.status !== "TESTING")
           throw new CustomError("Cannot directly move to Completed.", 400);
       }
+      await activityTrack("Changed Task Status", req, res, next);
+
       const updateStatus = await TaskService.updateStatus(
         id?.toString(),
         status?.toString()
@@ -192,6 +200,5 @@ const TaskController = {
       next(error);
     }
   },
-
 };
 export default TaskController;

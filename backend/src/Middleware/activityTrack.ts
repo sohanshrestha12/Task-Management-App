@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { UsersActivityModel } from "../routes/v1/UsersActivity/models";
 import { getTaskById } from "../routes/v1/Task/repository";
+import { UsersActivityModel } from "../routes/v1/UsersActivity/models";
 
-const activityTrack =
-  (action: string) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+const activityTrack =  async (action: string,req: Request, res: Response,next:NextFunction) => {
     try {
       if (req.method === "POST" && action === "Changed Task Status") {
           const { status,id } = req.params;
@@ -24,7 +22,6 @@ const activityTrack =
         });
         await userActivity.save();
       }
-      next();
     } catch (error) {
       next(error);
     }
